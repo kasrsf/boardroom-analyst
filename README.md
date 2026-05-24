@@ -13,11 +13,12 @@ forcing every claim to show its work.**
 
 ## Demo
 
-<video controls src="demo/output/boardroom-analyst-demo.mp4" title="Boardroom Analyst demo recording"></video>
+[![Boardroom Analyst demo recording](demo/output/boardroom-analyst-demo.gif)](demo/output/boardroom-analyst-demo.mp4)
 
-The recording shows the end-to-end pitch flow: a leadership question, dbt
-semantic context, read-only SQL, evidence, an executive brief, and a governed
-follow-up answer.
+The animated preview is optimized for GitHub README rendering. Open the
+[source MP4 recording](demo/output/boardroom-analyst-demo.mp4) for the full
+end-to-end pitch flow: a leadership question, dbt semantic context, read-only
+SQL, evidence, an executive brief, and a governed follow-up answer.
 
 ## Why It Exists
 
