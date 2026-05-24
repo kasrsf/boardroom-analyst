@@ -7,7 +7,7 @@
     "commercial_searches_billions"
   ],
   "database": "/Users/kasra/Documents/Skills Marketplace/demo/output/boardroom_demo.duckdb",
-  "elapsed_ms": 12.337,
+  "elapsed_ms": 11.206,
   "query_id": "q001_surface_revenue",
   "result_hash": "6c12f54fd683ad7591b5b721f0e9ca933a4150bce253e9d087cfbff6faed03b6",
   "row_count": 9,

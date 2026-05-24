@@ -5,7 +5,7 @@ from boardroom_analyst.duckdb_runner import execute_read_only_query
 from boardroom_analyst.sql_safety import UnsafeSqlError
 
 
-def create_pinterest_style_db(path):
+def create_visual_discovery_style_db(path):
     con = duckdb.connect(str(path))
     con.execute(
         """
@@ -22,8 +22,8 @@ def create_pinterest_style_db(path):
 
 
 def test_executes_select_read_only_and_records_provenance(tmp_path):
-    db_path = tmp_path / "pinterest.duckdb"
-    create_pinterest_style_db(db_path)
+    db_path = tmp_path / "visual_discovery.duckdb"
+    create_visual_discovery_style_db(db_path)
 
     result = execute_read_only_query(
         db_path,
@@ -43,20 +43,20 @@ def test_executes_select_read_only_and_records_provenance(tmp_path):
     assert result["sql_hash"]
     assert result["result_hash"]
     assert result["elapsed_ms"] >= 0
-    assert result["database"].endswith("pinterest.duckdb")
+    assert result["database"].endswith("visual_discovery.duckdb")
 
 
 def test_rejects_writes_before_opening_database(tmp_path):
-    db_path = tmp_path / "pinterest.duckdb"
-    create_pinterest_style_db(db_path)
+    db_path = tmp_path / "visual_discovery.duckdb"
+    create_visual_discovery_style_db(db_path)
 
     with pytest.raises(UnsafeSqlError):
         execute_read_only_query(db_path, "delete from ad_revenue_by_surface")
 
 
 def test_read_only_connection_does_not_allow_validated_write_bypass(tmp_path):
-    db_path = tmp_path / "pinterest.duckdb"
-    create_pinterest_style_db(db_path)
+    db_path = tmp_path / "visual_discovery.duckdb"
+    create_visual_discovery_style_db(db_path)
 
     with pytest.raises(UnsafeSqlError):
         execute_read_only_query(db_path, "copy (select * from ad_revenue_by_surface) to 'out.csv'")

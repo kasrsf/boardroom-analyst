@@ -11,9 +11,10 @@ open demo/showcase/index.html
 Suggested opening line:
 
 > This is Boardroom Analyst, a governed executive analytics skill pack. The
-> demo is framed as a Bill Ready-style Pinterest review: why did ad revenue
-> growth slow, and which monetization surface should leadership inspect first?
-> The answer is backed by dbt docs, read-only DuckDB SQL, and explicit caveats.
+> demo is framed as a CEO review for a visual-discovery commerce business: why
+> did ad revenue growth slow, and which monetization surface should leadership
+> inspect first? The answer is backed by dbt docs, read-only DuckDB SQL, and
+> explicit caveats.
 
 ## Scene 1: Product Promise
 
@@ -21,7 +22,7 @@ Say:
 
 > The user asks a CEO question: why did ad revenue growth slow in March? The
 > system does not jump straight to a narrative. It first checks whether the
-> Pinterest-style datamart is documented enough to trust.
+> visual-discovery datamart is documented enough to trust.
 
 ## Scene 2: Onboarding
 
@@ -65,6 +66,6 @@ Say:
 
 > The pilot ask is simple: connect this to one internal datamart and measure
 > whether the generated explanations are trusted by the data owner and useful to
-> the stakeholder. For Pinterest, the best first pilot would be ad monetization
-> or shopping-intent analytics because those are already strategic CEO-level
+> the stakeholder. The best first pilot would be ad monetization or
+> shopping-intent analytics because those are already strategic CEO-level
 > operating questions.

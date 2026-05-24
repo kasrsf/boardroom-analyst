@@ -1,6 +1,6 @@
 {
   "nodes": {
-    "model.pinterest_boardroom_mart.ad_revenue_by_surface": {
+    "model.visual_discovery_boardroom_mart.ad_revenue_by_surface": {
       "columns": {
         "month": {
           "type": "DATE",

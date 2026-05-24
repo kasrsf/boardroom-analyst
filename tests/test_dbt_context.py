@@ -23,7 +23,7 @@ def test_builds_context_from_manifest_catalog_and_schema_yaml(tmp_path):
                     "database": "local",
                     "schema": "main",
                     "alias": "ad_revenue_by_surface",
-                    "description": "Monthly Pinterest-style advertising revenue by monetization surface.",
+                    "description": "Monthly visual-discovery advertising revenue by monetization surface.",
                     "columns": {
                         "month": {"name": "month", "description": "Calendar month."},
                         "surface": {"name": "surface", "description": "Monetization surface."},

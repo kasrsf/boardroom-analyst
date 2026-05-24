@@ -1,16 +1,16 @@
 # Boardroom Brief
 
 Run: `boardroom-demo`
-Question: Bill Ready asks: why did ad revenue growth slow in March?
+Question: The CEO asks: why did ad revenue growth slow in March?
 
 ## Executive Summary
 
-Synthetic Pinterest-style ad revenue still grew in March, but the growth rate slowed from +$69M in February to +$48M in March because Brand Video Ads swung from +$7M growth to a -$14M decline while shopping and visual search kept expanding.
+Synthetic visual-discovery ad revenue still grew in March, but the growth rate slowed from +$69M in February to +$48M in March because Brand Video Ads swung from +$7M growth to a -$14M decline while shopping and visual search kept expanding.
 
 ## Findings
 
 - Total ad revenue increased from $925M to $973M in March, but monthly growth slowed from +$69M to +$48M. [`q002_revenue_growth_waterfall`] Confidence: `high`
-  - Caveat: Fixture is synthetic and should not be read as Pinterest reported results.
+  - Caveat: Fixture is synthetic and should not be read as reported company results.
 - Brand Video Ads declined by $14M in March, offsetting a combined +$62M from Performance Shopping Ads and Visual Search Ads. [`q001_surface_revenue`] Confidence: `high`
   - Caveat: Surface attribution is based on the documented model grain: one row per month and monetization surface.
 - Shopping-intent surfaces remained the strategic bright spot: Performance Shopping Ads added $39M and Visual Search Ads added $23M in March. [`q001_surface_revenue`] Confidence: `high`
@@ -31,8 +31,8 @@ Synthetic Pinterest-style ad revenue still grew in March, but the growth rate sl
 
 ## Caveats
 
-- Demo uses synthetic Pinterest-style advertising and engagement data.
-- The fixture is tailored for an internal pitch to Bill Ready and is not Pinterest reported data.
+- Demo uses synthetic visual-discovery advertising and engagement data.
+- The fixture is tailored for an internal executive pitch and is not reported company data.
 - The brief does not infer metrics outside documented dbt context.
 
 ## SQL Appendix

@@ -12,9 +12,9 @@ Internal leadership teams, data teams, and operating executives who already have
 dbt-modeled business data but still rely on analysts to manually explain every
 KPI movement.
 
-The included demo is deliberately tailored to a Bill Ready-style review at
-Pinterest: ad revenue growth, Performance Shopping Ads, Visual Search Ads,
-Brand Video Ads, engaged users, and commercial-intent search.
+The included demo is deliberately tailored to an executive review for a
+visual-discovery marketplace: ad revenue growth, Performance Shopping Ads,
+Visual Search Ads, Brand Video Ads, engaged users, and commercial-intent search.
 
 ## Problem
 
@@ -54,7 +54,7 @@ In three minutes, a manager can see:
 3. The answer includes SQL, chart data, hashes, and caveats.
 4. A follow-up question reuses the same governed context.
 
-The storyline aligns with Pinterest's public strategic language: AI-powered
+The storyline aligns with a visual-discovery commerce strategy: AI-powered
 visual search, shopping intent, performance advertising, and moving users from
 inspiration to action.
 

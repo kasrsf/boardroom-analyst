@@ -17,10 +17,10 @@ The builder creates:
 - `demo/output/reports/boardroom-demo/analysis_run.json`
 - `demo/output/reports/boardroom-demo/brief.md`
 
-The fixture uses synthetic Pinterest-style advertising data: Performance
+The fixture uses synthetic visual-discovery advertising data: Performance
 Shopping Ads, Visual Search Ads, Brand Video Ads, engaged users, and
-commercial-intent searches. It is designed for a Bill Ready internal pitch and
-does not represent Pinterest reported results.
+commercial-intent searches. It is designed for an internal executive pitch and
+does not represent reported company results.
 
 The showcase page lives at `demo/showcase/index.html`. The recorded MP4 is
 `demo/output/boardroom-analyst-demo.mp4`.

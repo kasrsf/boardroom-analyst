@@ -1,7 +1,7 @@
 {
   "caveats": [
-    "Demo uses synthetic Pinterest-style advertising and engagement data.",
-    "The fixture is tailored for an internal pitch to Bill Ready and is not Pinterest reported data.",
+    "Demo uses synthetic visual-discovery advertising and engagement data.",
+    "The fixture is tailored for an internal executive pitch and is not reported company data.",
     "The brief does not infer metrics outside documented dbt context."
   ],
   "charts": [
@@ -29,7 +29,7 @@
   "findings": [
     {
       "caveats": [
-        "Fixture is synthetic and should not be read as Pinterest reported results."
+        "Fixture is synthetic and should not be read as reported company results."
       ],
       "claim": "Total ad revenue increased from $925M to $973M in March, but monthly growth slowed from +$69M to +$48M.",
       "confidence": "high",
@@ -66,7 +66,7 @@
       "sql": "with totals as (\n  select\n    month,\n    sum(net_revenue_millions) as total_revenue_millions\n  from ad_revenue_by_surface\n  group by 1\n),\nchanges as (\n  select\n    month,\n    total_revenue_millions,\n    total_revenue_millions - lag(total_revenue_millions) over (order by month) as revenue_change_millions\n  from totals\n)\nselect *\nfrom changes\norder by month"
     }
   ],
-  "question": "Bill Ready asks: why did ad revenue growth slow in March?",
+  "question": "The CEO asks: why did ad revenue growth slow in March?",
   "run_id": "boardroom-demo",
-  "summary": "Synthetic Pinterest-style ad revenue still grew in March, but the growth rate slowed from +$69M in February to +$48M in March because Brand Video Ads swung from +$7M growth to a -$14M decline while shopping and visual search kept expanding."
+  "summary": "Synthetic visual-discovery ad revenue still grew in March, but the growth rate slowed from +$69M in February to +$48M in March because Brand Video Ads swung from +$7M growth to a -$14M decline while shopping and visual search kept expanding."
 }

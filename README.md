@@ -174,7 +174,7 @@ This repo includes a manager-ready pitch package:
 
 - `marketing/one-pager.md`: concise product one-pager.
 - `marketing/manager-pitch.md`: internal proposal framing.
-- `marketing/bill-ready-pitch-brief.md`: Pinterest-specific funding angle.
+- `marketing/executive-pitch-brief.md`: executive funding angle.
 - `marketing/pitch-deck.md`: slide-by-slide talk track.
 - `marketing/demo-script.md`: narration for a live or recorded demo.
 - `marketing/faq.md`: likely manager questions and crisp answers.
@@ -182,10 +182,10 @@ This repo includes a manager-ready pitch package:
 - `demo/showcase/index.html`: browser showcase used for the recording.
 - `demo/output/boardroom-analyst-demo.mp4`: short demo recording artifact.
 
-The included demo uses synthetic Pinterest-style data and is framed for a Bill
-Ready pitch: AI-powered shopping, visual search, commercial intent, engaged
-users, and performance advertising surfaces. It is explicitly not Pinterest
-reported financial data.
+The included demo uses synthetic visual-discovery marketplace data and is framed
+for an executive funding pitch: AI-powered shopping, visual search, commercial
+intent, engaged users, and performance advertising surfaces. It is explicitly
+not reported company financial data.
 
 Rebuild the demo:
 

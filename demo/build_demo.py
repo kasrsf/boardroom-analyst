@@ -31,7 +31,7 @@ def main() -> int:
     db_path = OUTPUT / "boardroom_demo.duckdb"
     _create_demo_database(db_path)
 
-    context = build_datamart_context(ROOT / "fixtures" / "pinterest_dbt")
+    context = build_datamart_context(ROOT / "fixtures" / "visual_discovery_dbt")
     write_datamart_context(context, OUTPUT / "datamart_context.json")
 
     q001 = execute_read_only_query(
@@ -100,9 +100,9 @@ def _write_chart_csv(query_result: dict, output: Path) -> None:
 def _analysis_run(q001: dict, q002: dict) -> dict:
     return {
         "run_id": "boardroom-demo",
-        "question": "Bill Ready asks: why did ad revenue growth slow in March?",
+        "question": "The CEO asks: why did ad revenue growth slow in March?",
         "summary": (
-            "Synthetic Pinterest-style ad revenue still grew in March, but the growth rate slowed "
+            "Synthetic visual-discovery ad revenue still grew in March, but the growth rate slowed "
             "from +$69M in February to +$48M in March because Brand Video Ads swung from "
             "+$7M growth to a -$14M decline while shopping and visual search kept expanding."
         ),
@@ -111,7 +111,7 @@ def _analysis_run(q001: dict, q002: dict) -> dict:
                 "claim": "Total ad revenue increased from $925M to $973M in March, but monthly growth slowed from +$69M to +$48M.",
                 "query_id": "q002_revenue_growth_waterfall",
                 "confidence": "high",
-                "caveats": ["Fixture is synthetic and should not be read as Pinterest reported results."],
+                "caveats": ["Fixture is synthetic and should not be read as reported company results."],
             },
             {
                 "claim": "Brand Video Ads declined by $14M in March, offsetting a combined +$62M from Performance Shopping Ads and Visual Search Ads.",
@@ -149,8 +149,8 @@ def _analysis_run(q001: dict, q002: dict) -> dict:
             _query_metadata(q002),
         ],
         "caveats": [
-            "Demo uses synthetic Pinterest-style advertising and engagement data.",
-            "The fixture is tailored for an internal pitch to Bill Ready and is not Pinterest reported data.",
+            "Demo uses synthetic visual-discovery advertising and engagement data.",
+            "The fixture is tailored for an internal executive pitch and is not reported company data.",
             "The brief does not infer metrics outside documented dbt context.",
         ],
     }

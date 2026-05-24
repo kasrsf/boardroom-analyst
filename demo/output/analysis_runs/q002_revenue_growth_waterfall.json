@@ -5,7 +5,7 @@
     "revenue_change_millions"
   ],
   "database": "/Users/kasra/Documents/Skills Marketplace/demo/output/boardroom_demo.duckdb",
-  "elapsed_ms": 9.665,
+  "elapsed_ms": 9.091,
   "query_id": "q002_revenue_growth_waterfall",
   "result_hash": "5b8108f4b3eb2a7d2a50bc7817b0190927884a199e2fbf1e3c1916af55d2cd03",
   "row_count": 3,

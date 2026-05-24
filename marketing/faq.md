@@ -31,11 +31,11 @@ opened read-only, and the scripts do not make network calls.
 One documented datamart, one executive workflow, one data owner, and a review
 loop for generated briefs.
 
-## Why is the demo Pinterest-specific?
+## Why is the demo visually specific?
 
 The repo is still a general Boardroom Analyst skill pack, but the sample data is
-tailored to a concrete internal funding pitch. A Pinterest-style demo lets a
-manager see the product against Bill Ready-level questions: ad revenue growth,
+tailored to a concrete internal funding pitch. A visual-discovery demo lets a
+manager see the product against CEO-level questions: ad revenue growth,
 shopping intent, visual search, engaged users, and performance advertising.
 
 ## What should we measure?

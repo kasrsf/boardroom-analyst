@@ -8,7 +8,7 @@ import duckdb
 def test_packaged_scripts_smoke_with_synthetic_fixture(tmp_path):
     root = __import__("pathlib").Path(__file__).resolve().parents[1]
     plugin_scripts = root / "plugins" / "boardroom-analyst" / "scripts"
-    db_path = tmp_path / "pinterest.duckdb"
+    db_path = tmp_path / "visual_discovery.duckdb"
     con = duckdb.connect(str(db_path))
     con.execute(
         """
@@ -29,7 +29,7 @@ def test_packaged_scripts_smoke_with_synthetic_fixture(tmp_path):
             sys.executable,
             str(plugin_scripts / "build_datamart_context.py"),
             "--dbt-project",
-            str(root / "fixtures" / "pinterest_dbt"),
+            str(root / "fixtures" / "visual_discovery_dbt"),
             "--output",
             str(context_path),
         ],
