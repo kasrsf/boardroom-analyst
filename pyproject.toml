@@ -1,0 +1,25 @@
+[project]
+name = "ceo-datamart-insights"
+version = "0.1.0"
+description = "Agent skill pack helpers for trusted CEO insight briefs over dbt-documented DuckDB datamarts."
+requires-python = ">=3.11"
+dependencies = [
+  "duckdb>=1.0.0",
+  "pyyaml>=6.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0"
+]
+
+[build-system]
+requires = ["setuptools>=69.0.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["plugins/ceo-datamart-insights/scripts"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["plugins/ceo-datamart-insights/scripts"]

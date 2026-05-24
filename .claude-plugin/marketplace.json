@@ -1,0 +1,14 @@
+{
+  "name": "skills-marketplace",
+  "owner": {
+    "name": "Skills Marketplace",
+    "email": "support@example.com"
+  },
+  "plugins": [
+    {
+      "name": "ceo-datamart-insights",
+      "source": "./plugins/ceo-datamart-insights",
+      "description": "Trusted CEO insights from dbt-documented DuckDB datamarts."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "skills-marketplace",
+  "interface": {
+    "displayName": "Skills Marketplace"
+  },
+  "plugins": [
+    {
+      "name": "ceo-datamart-insights",
+      "source": {
+        "source": "local",
+        "path": "./plugins/ceo-datamart-insights"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "name": "ceo-datamart-insights",
+  "version": "0.1.0",
+  "description": "Trusted CEO insight briefs and drill-down answers from dbt-documented DuckDB datamarts.",
+  "author": {
+    "name": "Skills Marketplace",
+    "email": "support@example.com",
+    "url": "https://example.com"
+  },
+  "homepage": "https://example.com/ceo-datamart-insights",
+  "repository": "https://example.com/skills-marketplace/ceo-datamart-insights",
+  "license": "LicenseRef-Commercial",
+  "keywords": [
+    "duckdb",
+    "dbt",
+    "analytics",
+    "ceo",
+    "datamart",
+    "visualization",
+    "business-intelligence"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "CEO Datamart Insights",
+    "shortDescription": "Trusted CEO insights from dbt and DuckDB",
+    "longDescription": "Analyze a local DuckDB datamart documented with dbt artifacts, produce executive insight briefs with SQL-backed claims, and support follow-up CEO questions through read-only local queries.",
+    "developerName": "Skills Marketplace",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://example.com/ceo-datamart-insights",
+    "privacyPolicyURL": "https://example.com/privacy",
+    "termsOfServiceURL": "https://example.com/terms",
+    "defaultPrompt": [
+      "Use my dbt-documented DuckDB datamart to explain this month's CEO metrics."
+    ],
+    "brandColor": "#155E75",
+    "screenshots": []
+  }
+}

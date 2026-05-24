@@ -1,0 +1,7 @@
+version: 2
+models:
+  - name: mrr_by_month
+    meta:
+      priority_questions:
+        - Why did revenue slow last month?
+        - Which segment is driving expansion?
