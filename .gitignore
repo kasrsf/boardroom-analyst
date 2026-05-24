@@ -6,3 +6,5 @@ __pycache__/
 reports/
 datamart_context.json
 analysis_run.json
+!demo/output/
+!demo/output/**

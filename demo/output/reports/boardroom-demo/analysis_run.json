@@ -1,0 +1,63 @@
+{
+  "caveats": [
+    "Demo uses a synthetic SaaS revenue mart.",
+    "The brief does not infer metrics outside documented dbt context."
+  ],
+  "charts": [
+    {
+      "caveats": [
+        "Demo data is synthetic."
+      ],
+      "filters": "All documented rows in demo fixture",
+      "path": "charts/mrr_by_segment.csv",
+      "query_id": "q001_segment_mrr",
+      "time_range": "2026-01 to 2026-03",
+      "title": "MRR by segment"
+    },
+    {
+      "caveats": [
+        "Demo data is synthetic."
+      ],
+      "filters": "All documented rows in demo fixture",
+      "path": "charts/growth_waterfall.csv",
+      "query_id": "q002_growth_waterfall",
+      "time_range": "2026-01 to 2026-03",
+      "title": "Monthly MRR growth"
+    }
+  ],
+  "findings": [
+    {
+      "caveats": [
+        "Fixture uses documented recurring revenue only and excludes one-time services."
+      ],
+      "claim": "Total MRR increased from $816K to $821K in March, but monthly growth dropped from +$53K to +$5K.",
+      "confidence": "high",
+      "query_id": "q002_growth_waterfall"
+    },
+    {
+      "caveats": [
+        "Segment-level attribution is based on the documented model grain: one row per month and customer segment."
+      ],
+      "claim": "Enterprise MRR fell by $17K in March, while mid-market and SMB added $22K combined.",
+      "confidence": "high",
+      "query_id": "q001_segment_mrr"
+    }
+  ],
+  "queries": [
+    {
+      "query_id": "q001_segment_mrr",
+      "result_hash": "1991adb8a4e5a0be53cc73cb73eae45b5ef14d15d356ba3a73f11564f8657649",
+      "row_count": 9,
+      "sql": "select\n  month,\n  segment,\n  mrr\nfrom mrr_by_month\norder by month, segment"
+    },
+    {
+      "query_id": "q002_growth_waterfall",
+      "result_hash": "f72494034f10d50445b1dd32f57fed95101e59762a310c658ba09c2866633fe1",
+      "row_count": 3,
+      "sql": "with totals as (\n  select\n    month,\n    sum(mrr) as total_mrr\n  from mrr_by_month\n  group by 1\n),\nchanges as (\n  select\n    month,\n    total_mrr,\n    total_mrr - lag(total_mrr) over (order by month) as mrr_change\n  from totals\n)\nselect *\nfrom changes\norder by month"
+    }
+  ],
+  "question": "Why did net revenue growth slow in March?",
+  "run_id": "boardroom-demo",
+  "summary": "MRR still grew in March, but the growth rate slowed from +$53K in February to +$5K in March because enterprise contraction offset continued SMB and mid-market expansion."
+}

@@ -1,0 +1,72 @@
+{
+  "generated_at": "2026-05-24T18:13:53.996380+00:00",
+  "metrics": [
+    {
+      "description": "Monthly recurring revenue.",
+      "metric_id": "metric.saas_boardroom_mart.mrr",
+      "name": "mrr",
+      "type": "simple",
+      "type_params": {
+        "measure": "mrr"
+      }
+    }
+  ],
+  "project_name": "saas_boardroom_mart",
+  "source": {
+    "catalog": "/Users/kasra/Documents/Skills Marketplace/fixtures/saas_dbt/target/catalog.json",
+    "dbt_project_dir": "/Users/kasra/Documents/Skills Marketplace/fixtures/saas_dbt",
+    "manifest": "/Users/kasra/Documents/Skills Marketplace/fixtures/saas_dbt/target/manifest.json"
+  },
+  "tables": [
+    {
+      "columns": {
+        "month": {
+          "description": "Calendar month.",
+          "meta": {},
+          "name": "month",
+          "stats": {},
+          "type": ""
+        },
+        "mrr": {
+          "description": "Monthly recurring revenue excluding one-time services.",
+          "meta": {},
+          "name": "mrr",
+          "stats": {},
+          "type": ""
+        },
+        "segment": {
+          "description": "Customer segment.",
+          "meta": {},
+          "name": "segment",
+          "stats": {},
+          "type": ""
+        }
+      },
+      "database": "local",
+      "description": "Monthly recurring revenue by customer segment.",
+      "grain": "one row per month and customer segment",
+      "joins": [],
+      "metrics": [
+        {
+          "caveats": [
+            "Excludes one-time services."
+          ],
+          "description": "Monthly recurring revenue.",
+          "formula": "sum(mrr)",
+          "name": "mrr"
+        }
+      ],
+      "name": "mrr_by_month",
+      "node_id": "model.saas_boardroom_mart.mrr_by_month",
+      "priority_questions": [
+        "Why did revenue slow last month?",
+        "Which segment is driving expansion?"
+      ],
+      "schema": "main",
+      "trust_level": "high",
+      "warnings": []
+    }
+  ],
+  "version": "0.1.0",
+  "warnings": []
+}

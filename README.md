@@ -1,22 +1,38 @@
-# CEO Datamart Insights
+# Boardroom Analyst
 
-CEO Datamart Insights is a premium agent skill pack for turning a local,
-dbt-documented DuckDB datamart into trusted executive analysis.
+Boardroom Analyst is a governed executive analytics skill pack for local,
+dbt-documented DuckDB datamarts.
 
-The pack is designed for founders, operators, and CEOs who want direct answers
-from a well-documented data mart without turning every question into a custom
-analytics project. It prioritizes provenance over polish: every material claim
-should trace back to dbt documentation, read-only SQL, row counts, result hashes,
-and caveats.
+It gives leaders a way to ask boardroom-level questions such as "Why did growth
+slow last month?" or "Which segment is driving churn?" and receive answers that
+are grounded in documented metrics, read-only SQL, chart-ready data, and explicit
+caveats.
 
-## What It Includes
+The core idea: **make agentic analytics credible enough for executive review by
+forcing every claim to show its work.**
 
-The marketplace plugin lives at `plugins/ceo-datamart-insights` and ships three
-skills:
+## Why It Exists
 
-- `datamart-onboarding`: validates dbt artifacts and builds `datamart_context.json`.
-- `ceo-insight-brief`: creates a CEO-facing brief with SQL-backed findings, chart data, caveats, and a query appendix.
-- `ceo-query-analyst`: answers follow-up executive questions through a local read-only DuckDB query loop.
+Most companies already have useful datamarts, but the last mile from governed
+data to executive insight is still slow. Analysts answer recurring leadership
+questions manually, dashboards rarely explain the "why", and generic AI tools
+can hallucinate metrics or silently use the wrong grain.
+
+Boardroom Analyst packages a safer workflow:
+
+- Use dbt docs as the semantic authority.
+- Query local DuckDB data in read-only mode.
+- Attach every material claim to source SQL and result hashes.
+- Produce an executive brief plus a follow-up query loop.
+- Refuse or qualify answers when metric definitions, grain, or joins are missing.
+
+## What Ships
+
+The plugin lives at `plugins/boardroom-analyst` and includes three skills:
+
+- `boardroom-onboarding`: validates dbt artifacts and builds `datamart_context.json`.
+- `boardroom-brief`: creates an executive brief with SQL-backed findings, chart data, caveats, and a query appendix.
+- `boardroom-query`: answers follow-up executive questions through local read-only DuckDB queries.
 
 It also includes deterministic helper scripts for:
 
@@ -36,7 +52,7 @@ It also includes deterministic helper scripts for:
   - Recommended: `target/catalog.json`
   - Recommended: model YAML docs with metric, grain, caveat, join, and priority-question metadata
 
-## Getting Started
+## Setup
 
 Create the Python environment with `uv`:
 
@@ -51,31 +67,29 @@ Run the test suite:
 .venv/bin/python -m pytest
 ```
 
-Validate the Codex plugin manifest:
+Validate the plugin:
 
 ```bash
-python3 /Users/kasra/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/ceo-datamart-insights
+python3 /Users/kasra/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/boardroom-analyst
 ```
 
-Validate individual skill files:
+Validate individual skills:
 
 ```bash
-python3 /Users/kasra/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/ceo-datamart-insights/skills/datamart-onboarding
-python3 /Users/kasra/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/ceo-datamart-insights/skills/ceo-insight-brief
-python3 /Users/kasra/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/ceo-datamart-insights/skills/ceo-query-analyst
+python3 /Users/kasra/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/boardroom-analyst/skills/boardroom-onboarding
+python3 /Users/kasra/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/boardroom-analyst/skills/boardroom-brief
+python3 /Users/kasra/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/boardroom-analyst/skills/boardroom-query
 ```
 
-## Usage Guide
+## Usage
 
-Set the plugin root once for easier commands:
+Set the plugin root once:
 
 ```bash
-PLUGIN_ROOT="plugins/ceo-datamart-insights"
+PLUGIN_ROOT="plugins/boardroom-analyst"
 ```
 
 ### 1. Build Semantic Context
-
-Use this before asking CEO-level business questions:
 
 ```bash
 .venv/bin/python "$PLUGIN_ROOT/scripts/build_datamart_context.py" \
@@ -83,13 +97,10 @@ Use this before asking CEO-level business questions:
   --output datamart_context.json
 ```
 
-The output summarizes documented models, columns, metrics, grain, joins, caveats,
-priority questions, trust level, and warnings. If key documentation is missing,
-the skills should qualify or refuse unsupported CEO claims.
+This produces a normalized context file covering documented models, columns,
+metrics, grain, joins, caveats, priority questions, trust level, and warnings.
 
 ### 2. Run a Read-Only Query
-
-Run a SQL string:
 
 ```bash
 .venv/bin/python "$PLUGIN_ROOT/scripts/run_duckdb_query.py" \
@@ -99,23 +110,10 @@ Run a SQL string:
   --output analysis_runs/q001.json
 ```
 
-Or run SQL from a file:
-
-```bash
-.venv/bin/python "$PLUGIN_ROOT/scripts/run_duckdb_query.py" \
-  --database path/to/warehouse.duckdb \
-  --query-id q001 \
-  --sql-file queries/q001.sql \
-  --output analysis_runs/q001.json
-```
-
 The SQL guard rejects writes, extension loading, database attachment, and
 multi-statement SQL before execution.
 
 ### 3. Export Chart Data
-
-The pack exports chart data as CSV so any agent or UI can render it without
-re-running the query:
 
 ```bash
 .venv/bin/python "$PLUGIN_ROOT/scripts/export_chart_csv.py" \
@@ -123,10 +121,7 @@ re-running the query:
   --output reports/run_001/charts/mrr_by_segment.csv
 ```
 
-### 4. Write the CEO Brief
-
-Create an `analysis_run.json` that contains the CEO question, summary, findings,
-chart specs, query metadata, and caveats. Then render the brief:
+### 4. Write the Executive Brief
 
 ```bash
 .venv/bin/python "$PLUGIN_ROOT/scripts/write_insight_brief.py" \
@@ -141,51 +136,68 @@ This writes:
 
 ## Agent Workflow
 
-In Codex or Claude Code, invoke the relevant skill:
+Example prompts:
 
 ```text
-Use $datamart-onboarding to validate my DuckDB datamart and dbt docs.
+Use $boardroom-onboarding to validate my DuckDB datamart and dbt docs.
 ```
 
 ```text
-Use $ceo-insight-brief to explain why revenue slowed last month using this datamart.
+Use $boardroom-brief to explain why revenue slowed last month using this datamart.
 ```
 
 ```text
-Use $ceo-query-analyst to drill into which customer segment drove the change.
+Use $boardroom-query to drill into which customer segment drove the change.
 ```
 
 The intended loop is:
 
 1. Onboard the datamart and produce `datamart_context.json`.
-2. Ask a CEO question.
+2. Ask an executive question.
 3. Let the agent propose a small query plan.
 4. Execute read-only DuckDB SQL through the helper script.
 5. Generate chart CSVs and a brief.
 6. Ask follow-up questions and reuse the same provenance trail.
 
+## Demo And Pitch Materials
+
+This repo includes a manager-ready pitch package:
+
+- `marketing/one-pager.md`: concise product one-pager.
+- `marketing/manager-pitch.md`: internal proposal framing.
+- `marketing/pitch-deck.md`: slide-by-slide talk track.
+- `marketing/demo-script.md`: narration for a live or recorded demo.
+- `marketing/faq.md`: likely manager questions and crisp answers.
+- `demo/build_demo.py`: builds a complete synthetic demo.
+- `demo/showcase/index.html`: browser showcase used for the recording.
+- `demo/output/boardroom-analyst-demo.mp4`: short demo recording artifact.
+
+Rebuild the demo:
+
+```bash
+.venv/bin/python demo/build_demo.py
+```
+
 ## Trust Model
 
-The pack is intentionally conservative:
+Boardroom Analyst is intentionally conservative:
 
 - dbt docs are the authority for metric meaning, table grain, joins, and caveats.
-- Undocumented metrics should not be invented from column names.
+- Undocumented metrics are not invented from column names.
 - Every material claim needs a source query ID.
 - Every query result records SQL, row count, SQL hash, result hash, and elapsed time.
-- Every chart should document source query, filters, time range, and caveats.
+- Every chart documents source query, filters, time range, and caveats.
 - Raw data stays local; the helper scripts do not make network calls.
 
 ## Marketplace Status
 
-This repository is marketplace-ready but does not enforce payment at runtime.
-
 Included:
 
-- Codex plugin manifest: `plugins/ceo-datamart-insights/.codex-plugin/plugin.json`
-- Claude plugin manifest: `plugins/ceo-datamart-insights/.claude-plugin/plugin.json`
+- Codex plugin manifest: `plugins/boardroom-analyst/.codex-plugin/plugin.json`
+- Claude plugin manifest: `plugins/boardroom-analyst/.claude-plugin/plugin.json`
 - Codex marketplace entry: `.agents/plugins/marketplace.json`
 - Claude marketplace entry: `.claude-plugin/marketplace.json`
-- Release metadata and checksums: `plugins/ceo-datamart-insights/release.json`
+- Release metadata and checksums: `plugins/boardroom-analyst/release.json`
 
 Deferred:
 
@@ -196,9 +208,6 @@ Deferred:
 - Interactive dashboard UI
 
 ## Development Notes
-
-The synthetic fixture at `fixtures/saas_dbt` is used by the smoke test to verify
-the packaged CLI scripts end to end.
 
 Useful test commands:
 
@@ -211,4 +220,5 @@ Useful test commands:
 ```
 
 Generated runtime artifacts such as `reports/`, `datamart_context.json`, and
-`analysis_run.json` are ignored by git.
+`analysis_run.json` are ignored by git. Demo outputs under `demo/output` are
+kept intentionally because they support the pitch package.
