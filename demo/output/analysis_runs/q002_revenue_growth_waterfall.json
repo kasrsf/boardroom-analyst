@@ -1,0 +1,32 @@
+{
+  "columns": [
+    "month",
+    "total_revenue_millions",
+    "revenue_change_millions"
+  ],
+  "database": "/Users/kasra/Documents/Skills Marketplace/demo/output/boardroom_demo.duckdb",
+  "elapsed_ms": 9.665,
+  "query_id": "q002_revenue_growth_waterfall",
+  "result_hash": "5b8108f4b3eb2a7d2a50bc7817b0190927884a199e2fbf1e3c1916af55d2cd03",
+  "row_count": 3,
+  "rows": [
+    {
+      "month": "2026-01-01",
+      "revenue_change_millions": null,
+      "total_revenue_millions": "856.0"
+    },
+    {
+      "month": "2026-02-01",
+      "revenue_change_millions": "69.0",
+      "total_revenue_millions": "925.0"
+    },
+    {
+      "month": "2026-03-01",
+      "revenue_change_millions": "48.0",
+      "total_revenue_millions": "973.0"
+    }
+  ],
+  "sql": "with totals as (\n  select\n    month,\n    sum(net_revenue_millions) as total_revenue_millions\n  from ad_revenue_by_surface\n  group by 1\n),\nchanges as (\n  select\n    month,\n    total_revenue_millions,\n    total_revenue_millions - lag(total_revenue_millions) over (order by month) as revenue_change_millions\n  from totals\n)\nselect *\nfrom changes\norder by month",
+  "sql_hash": "16583308b6ee7ae42d52cbd037feaf2ea5e4e9e13d1d76154f0106c62c631443",
+  "truncated": false
+}

@@ -3,10 +3,10 @@
 Boardroom Analyst is a governed executive analytics skill pack for local,
 dbt-documented DuckDB datamarts.
 
-It gives leaders a way to ask boardroom-level questions such as "Why did growth
-slow last month?" or "Which segment is driving churn?" and receive answers that
-are grounded in documented metrics, read-only SQL, chart-ready data, and explicit
-caveats.
+It gives leaders a way to ask boardroom-level questions such as "Why did ad
+revenue growth slow last month?" or "Which monetization surface is driving the
+change?" and receive answers that are grounded in documented metrics, read-only
+SQL, chart-ready data, and explicit caveats.
 
 The core idea: **make agentic analytics credible enough for executive review by
 forcing every claim to show its work.**
@@ -115,7 +115,7 @@ metrics, grain, joins, caveats, priority questions, trust level, and warnings.
 .venv/bin/python "$PLUGIN_ROOT/scripts/run_duckdb_query.py" \
   --database path/to/warehouse.duckdb \
   --query-id q001 \
-  --sql "select segment, sum(mrr) as mrr from mrr_by_month group by 1 order by 1" \
+  --sql "select surface, sum(net_revenue_millions) as net_revenue_millions from ad_revenue_by_surface group by 1 order by 1" \
   --output analysis_runs/q001.json
 ```
 
@@ -127,7 +127,7 @@ multi-statement SQL before execution.
 ```bash
 .venv/bin/python "$PLUGIN_ROOT/scripts/export_chart_csv.py" \
   --query-result analysis_runs/q001.json \
-  --output reports/run_001/charts/mrr_by_segment.csv
+  --output reports/run_001/charts/revenue_by_surface.csv
 ```
 
 ### 4. Write the Executive Brief
@@ -152,11 +152,11 @@ Use $boardroom-onboarding to validate my DuckDB datamart and dbt docs.
 ```
 
 ```text
-Use $boardroom-brief to explain why revenue slowed last month using this datamart.
+Use $boardroom-brief to explain why ad revenue growth slowed last month using this datamart.
 ```
 
 ```text
-Use $boardroom-query to drill into which customer segment drove the change.
+Use $boardroom-query to drill into which monetization surface drove the change.
 ```
 
 The intended loop is:
@@ -174,12 +174,18 @@ This repo includes a manager-ready pitch package:
 
 - `marketing/one-pager.md`: concise product one-pager.
 - `marketing/manager-pitch.md`: internal proposal framing.
+- `marketing/bill-ready-pitch-brief.md`: Pinterest-specific funding angle.
 - `marketing/pitch-deck.md`: slide-by-slide talk track.
 - `marketing/demo-script.md`: narration for a live or recorded demo.
 - `marketing/faq.md`: likely manager questions and crisp answers.
 - `demo/build_demo.py`: builds a complete synthetic demo.
 - `demo/showcase/index.html`: browser showcase used for the recording.
 - `demo/output/boardroom-analyst-demo.mp4`: short demo recording artifact.
+
+The included demo uses synthetic Pinterest-style data and is framed for a Bill
+Ready pitch: AI-powered shopping, visual search, commercial intent, engaged
+users, and performance advertising surfaces. It is explicitly not Pinterest
+reported financial data.
 
 Rebuild the demo:
 

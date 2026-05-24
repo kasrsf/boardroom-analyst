@@ -31,23 +31,23 @@ def main() -> int:
     db_path = OUTPUT / "boardroom_demo.duckdb"
     _create_demo_database(db_path)
 
-    context = build_datamart_context(ROOT / "fixtures" / "saas_dbt")
+    context = build_datamart_context(ROOT / "fixtures" / "pinterest_dbt")
     write_datamart_context(context, OUTPUT / "datamart_context.json")
 
     q001 = execute_read_only_query(
         db_path,
-        (ROOT / "demo" / "queries" / "q001_segment_mrr.sql").read_text(encoding="utf-8"),
-        query_id="q001_segment_mrr",
+        (ROOT / "demo" / "queries" / "q001_surface_revenue.sql").read_text(encoding="utf-8"),
+        query_id="q001_surface_revenue",
     )
     q002 = execute_read_only_query(
         db_path,
-        (ROOT / "demo" / "queries" / "q002_growth_waterfall.sql").read_text(encoding="utf-8"),
-        query_id="q002_growth_waterfall",
+        (ROOT / "demo" / "queries" / "q002_revenue_growth_waterfall.sql").read_text(encoding="utf-8"),
+        query_id="q002_revenue_growth_waterfall",
     )
-    write_query_result(q001, ANALYSIS_DIR / "q001_segment_mrr.json")
-    write_query_result(q002, ANALYSIS_DIR / "q002_growth_waterfall.json")
-    _write_chart_csv(q001, REPORT_DIR / "charts" / "mrr_by_segment.csv")
-    _write_chart_csv(q002, REPORT_DIR / "charts" / "growth_waterfall.csv")
+    write_query_result(q001, ANALYSIS_DIR / "q001_surface_revenue.json")
+    write_query_result(q002, ANALYSIS_DIR / "q002_revenue_growth_waterfall.json")
+    _write_chart_csv(q001, REPORT_DIR / "charts" / "revenue_by_surface.csv")
+    _write_chart_csv(q002, REPORT_DIR / "charts" / "revenue_growth_waterfall.csv")
 
     run = _analysis_run(q001, q002)
     write_insight_brief(run, REPORT_DIR)
@@ -69,19 +69,19 @@ def _create_demo_database(db_path: Path) -> None:
     con = duckdb.connect(str(db_path))
     con.execute(
         """
-        create table mrr_by_month as
+        create table ad_revenue_by_surface as
         select * from (
           values
-            (date '2026-01-01', 'enterprise', 420000),
-            (date '2026-01-01', 'mid-market', 225000),
-            (date '2026-01-01', 'smb', 118000),
-            (date '2026-02-01', 'enterprise', 438000),
-            (date '2026-02-01', 'mid-market', 246000),
-            (date '2026-02-01', 'smb', 132000),
-            (date '2026-03-01', 'enterprise', 421000),
-            (date '2026-03-01', 'mid-market', 258000),
-            (date '2026-03-01', 'smb', 142000)
-        ) as t(month, segment, mrr)
+            (date '2026-01-01', 'Performance Shopping Ads', 372.0, 182.0, 21.4),
+            (date '2026-01-01', 'Visual Search Ads', 298.0, 165.0, 18.9),
+            (date '2026-01-01', 'Brand Video Ads', 186.0, 124.0, 7.2),
+            (date '2026-02-01', 'Performance Shopping Ads', 410.0, 190.0, 23.6),
+            (date '2026-02-01', 'Visual Search Ads', 322.0, 171.0, 20.2),
+            (date '2026-02-01', 'Brand Video Ads', 193.0, 126.0, 7.5),
+            (date '2026-03-01', 'Performance Shopping Ads', 449.0, 199.0, 25.5),
+            (date '2026-03-01', 'Visual Search Ads', 345.0, 178.0, 21.8),
+            (date '2026-03-01', 'Brand Video Ads', 179.0, 127.0, 7.6)
+        ) as t(month, surface, net_revenue_millions, engaged_users_millions, commercial_searches_billions)
         """
     )
     con.close()
@@ -100,39 +100,45 @@ def _write_chart_csv(query_result: dict, output: Path) -> None:
 def _analysis_run(q001: dict, q002: dict) -> dict:
     return {
         "run_id": "boardroom-demo",
-        "question": "Why did net revenue growth slow in March?",
+        "question": "Bill Ready asks: why did ad revenue growth slow in March?",
         "summary": (
-            "MRR still grew in March, but the growth rate slowed from +$53K in February "
-            "to +$5K in March because enterprise contraction offset continued SMB and "
-            "mid-market expansion."
+            "Synthetic Pinterest-style ad revenue still grew in March, but the growth rate slowed "
+            "from +$69M in February to +$48M in March because Brand Video Ads swung from "
+            "+$7M growth to a -$14M decline while shopping and visual search kept expanding."
         ),
         "findings": [
             {
-                "claim": "Total MRR increased from $816K to $821K in March, but monthly growth dropped from +$53K to +$5K.",
-                "query_id": "q002_growth_waterfall",
+                "claim": "Total ad revenue increased from $925M to $973M in March, but monthly growth slowed from +$69M to +$48M.",
+                "query_id": "q002_revenue_growth_waterfall",
                 "confidence": "high",
-                "caveats": ["Fixture uses documented recurring revenue only and excludes one-time services."],
+                "caveats": ["Fixture is synthetic and should not be read as Pinterest reported results."],
             },
             {
-                "claim": "Enterprise MRR fell by $17K in March, while mid-market and SMB added $22K combined.",
-                "query_id": "q001_segment_mrr",
+                "claim": "Brand Video Ads declined by $14M in March, offsetting a combined +$62M from Performance Shopping Ads and Visual Search Ads.",
+                "query_id": "q001_surface_revenue",
                 "confidence": "high",
-                "caveats": ["Segment-level attribution is based on the documented model grain: one row per month and customer segment."],
+                "caveats": ["Surface attribution is based on the documented model grain: one row per month and monetization surface."],
+            },
+            {
+                "claim": "Shopping-intent surfaces remained the strategic bright spot: Performance Shopping Ads added $39M and Visual Search Ads added $23M in March.",
+                "query_id": "q001_surface_revenue",
+                "confidence": "high",
+                "caveats": ["Commercial search and engaged-user fields are synthetic proxies for demo purposes."],
             },
         ],
         "charts": [
             {
-                "title": "MRR by segment",
-                "path": "charts/mrr_by_segment.csv",
-                "query_id": "q001_segment_mrr",
+                "title": "Ad revenue by monetization surface",
+                "path": "charts/revenue_by_surface.csv",
+                "query_id": "q001_surface_revenue",
                 "filters": "All documented rows in demo fixture",
                 "time_range": "2026-01 to 2026-03",
                 "caveats": ["Demo data is synthetic."],
             },
             {
-                "title": "Monthly MRR growth",
-                "path": "charts/growth_waterfall.csv",
-                "query_id": "q002_growth_waterfall",
+                "title": "Monthly ad revenue growth",
+                "path": "charts/revenue_growth_waterfall.csv",
+                "query_id": "q002_revenue_growth_waterfall",
                 "filters": "All documented rows in demo fixture",
                 "time_range": "2026-01 to 2026-03",
                 "caveats": ["Demo data is synthetic."],
@@ -143,7 +149,8 @@ def _analysis_run(q001: dict, q002: dict) -> dict:
             _query_metadata(q002),
         ],
         "caveats": [
-            "Demo uses a synthetic SaaS revenue mart.",
+            "Demo uses synthetic Pinterest-style advertising and engagement data.",
+            "The fixture is tailored for an internal pitch to Bill Ready and is not Pinterest reported data.",
             "The brief does not infer metrics outside documented dbt context.",
         ],
     }

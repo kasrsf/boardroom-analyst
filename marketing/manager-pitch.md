@@ -10,6 +10,10 @@ read-only SQL, and auditable artifacts.
 The goal is not to replace dashboards or analysts. The goal is to reduce the
 manual loop between "the metric moved" and "here is the defensible explanation."
 
+The demo is tailored for a Bill Ready-style executive review at Pinterest. It
+uses synthetic advertising data across Performance Shopping Ads, Visual Search
+Ads, and Brand Video Ads to show how a CEO question becomes a governed answer.
+
 ## Why This Is Worth Building Internally
 
 We already invest in semantic data models, metric definitions, and business
@@ -30,7 +34,7 @@ to warehouse connectors, review workflows, and packaged skills for other teams.
 Recommended pilot:
 
 - One internal dbt-documented datamart.
-- One recurring leadership workflow, such as monthly revenue movement or churn review.
+- One recurring leadership workflow, such as ad revenue movement, shopping funnel quality, or engagement monetization review.
 - One data owner validating metric definitions and caveats.
 - One executive stakeholder reviewing whether the output is decision-useful.
 
@@ -60,3 +64,7 @@ Out of scope for the pilot:
 Approve a two-week internal pilot to connect Boardroom Analyst to one governed
 datamart and evaluate whether it can produce executive-ready, reviewable KPI
 explanations.
+
+Recommended first question for the pitch: "Bill Ready asks why ad revenue growth
+slowed in March. Which monetization surface should he ask the ads leadership
+team about first?"

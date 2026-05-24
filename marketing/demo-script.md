@@ -11,16 +11,17 @@ open demo/showcase/index.html
 Suggested opening line:
 
 > This is Boardroom Analyst, a governed executive analytics skill pack. The
-> demo shows how a CEO-style question becomes a reviewable answer backed by dbt
-> docs, read-only DuckDB SQL, and explicit caveats.
+> demo is framed as a Bill Ready-style Pinterest review: why did ad revenue
+> growth slow, and which monetization surface should leadership inspect first?
+> The answer is backed by dbt docs, read-only DuckDB SQL, and explicit caveats.
 
 ## Scene 1: Product Promise
 
 Say:
 
-> The user asks a leadership question: why did growth slow this month? The
+> The user asks a CEO question: why did ad revenue growth slow in March? The
 > system does not jump straight to a narrative. It first checks whether the
-> datamart is documented enough to trust.
+> Pinterest-style datamart is documented enough to trust.
 
 ## Scene 2: Onboarding
 
@@ -40,9 +41,9 @@ Say:
 
 Say:
 
-> The result shows that total MRR still grew, but the growth rate slowed sharply.
-> Segment-level evidence points to enterprise contraction offsetting SMB and
-> mid-market expansion.
+> The result shows that total ad revenue still grew, but the growth rate slowed.
+> Performance Shopping Ads and Visual Search Ads kept expanding, while Brand
+> Video Ads declined and absorbed part of that strategic momentum.
 
 ## Scene 5: Executive Brief
 
@@ -56,7 +57,7 @@ Say:
 Say:
 
 > The executive can ask a follow-up question without starting over. The answer
-> reuses the same governed context and keeps the source query trail.
+> points to the first surface to inspect and keeps the same source query trail.
 
 ## Close
 
@@ -64,4 +65,6 @@ Say:
 
 > The pilot ask is simple: connect this to one internal datamart and measure
 > whether the generated explanations are trusted by the data owner and useful to
-> the stakeholder.
+> the stakeholder. For Pinterest, the best first pilot would be ad monetization
+> or shopping-intent analytics because those are already strategic CEO-level
+> operating questions.

@@ -10,7 +10,7 @@ def test_allows_single_select_and_normalizes_trailing_semicolon():
 def test_rejects_mutating_keywords_outside_strings_and_comments():
     unsafe = [
         "insert into revenue values (1)",
-        "update revenue set mrr = 0",
+        "update revenue set net_revenue_millions = 0",
         "delete from revenue",
         "create table x as select 1",
         "drop table revenue",
@@ -29,9 +29,9 @@ def test_rejects_mutating_keywords_outside_strings_and_comments():
 def test_allows_danger_words_inside_literals_and_comments():
     sql = """
     -- drop is only text in a comment
-    select 'delete is only text' as note, segment
+    select 'delete is only text' as note, surface
     from revenue
-    where segment <> 'copy'
+    where surface <> 'copy'
     """
 
     assert "delete" in sql.lower()

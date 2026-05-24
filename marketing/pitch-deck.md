@@ -9,6 +9,9 @@ Governed executive analytics from documented datamarts.
 Talk track: We are not pitching another dashboard. We are pitching a safe way
 for executives to ask why a metric moved and get a reviewable answer.
 
+Demo framing: use a Pinterest-style Bill Ready question around ad revenue,
+shopping intent, visual search, and performance advertising.
+
 ## Slide 2: The Problem
 
 Dashboards answer "what changed." Leaders ask "why did it change?"
@@ -28,13 +31,17 @@ agent-readable and force the agent to show its work.
 Boardroom Analyst reads dbt docs, runs local read-only DuckDB SQL, and produces
 an executive brief with query IDs, chart data, result hashes, and caveats.
 
+For the showcase, the mart is a synthetic Pinterest-style model:
+`ad_revenue_by_surface`, with Performance Shopping Ads, Visual Search Ads, and
+Brand Video Ads.
+
 ## Slide 5: Demo Flow
 
 1. Onboard dbt + DuckDB.
-2. Ask why growth slowed.
+2. Ask why ad revenue growth slowed.
 3. Run read-only SQL.
 4. Generate the brief.
-5. Ask a follow-up.
+5. Ask which monetization surface Bill should ask the ads team about first.
 
 ## Slide 6: Governance Model
 
@@ -48,6 +55,11 @@ Trust gates:
 
 It uses our existing data modeling investment, starts with a contained local
 runtime, and creates a reusable pattern for packaged agent skills.
+
+The Pinterest-style demo makes the business value concrete: a CEO can see
+whether growth is coming from strategic shopping-intent surfaces or being
+dragged by a weaker advertising surface, without accepting unsupported agent
+narrative.
 
 ## Slide 8: Pilot Ask
 

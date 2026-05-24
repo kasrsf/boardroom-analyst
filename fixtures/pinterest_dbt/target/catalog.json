@@ -1,0 +1,48 @@
+{
+  "nodes": {
+    "model.pinterest_boardroom_mart.ad_revenue_by_surface": {
+      "columns": {
+        "month": {
+          "type": "DATE",
+          "stats": {
+            "count": {
+              "value": 3
+            }
+          }
+        },
+        "surface": {
+          "type": "VARCHAR",
+          "stats": {
+            "count": {
+              "value": 9
+            }
+          }
+        },
+        "net_revenue_millions": {
+          "type": "DOUBLE",
+          "stats": {
+            "count": {
+              "value": 9
+            }
+          }
+        },
+        "engaged_users_millions": {
+          "type": "DOUBLE",
+          "stats": {
+            "count": {
+              "value": 9
+            }
+          }
+        },
+        "commercial_searches_billions": {
+          "type": "DOUBLE",
+          "stats": {
+            "count": {
+              "value": 9
+            }
+          }
+        }
+      }
+    }
+  }
+}

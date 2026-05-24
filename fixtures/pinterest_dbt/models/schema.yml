@@ -1,0 +1,8 @@
+version: 2
+models:
+  - name: ad_revenue_by_surface
+    meta:
+      priority_questions:
+        - Bill Ready asks why ad revenue growth slowed in March.
+        - Which monetization surface is driving or dragging growth?
+        - Are shopping-intent surfaces scaling faster than brand video?

@@ -1,0 +1,82 @@
+{
+  "columns": [
+    "month",
+    "surface",
+    "net_revenue_millions",
+    "engaged_users_millions",
+    "commercial_searches_billions"
+  ],
+  "database": "/Users/kasra/Documents/Skills Marketplace/demo/output/boardroom_demo.duckdb",
+  "elapsed_ms": 12.337,
+  "query_id": "q001_surface_revenue",
+  "result_hash": "6c12f54fd683ad7591b5b721f0e9ca933a4150bce253e9d087cfbff6faed03b6",
+  "row_count": 9,
+  "rows": [
+    {
+      "commercial_searches_billions": "7.2",
+      "engaged_users_millions": "124.0",
+      "month": "2026-01-01",
+      "net_revenue_millions": "186.0",
+      "surface": "Brand Video Ads"
+    },
+    {
+      "commercial_searches_billions": "21.4",
+      "engaged_users_millions": "182.0",
+      "month": "2026-01-01",
+      "net_revenue_millions": "372.0",
+      "surface": "Performance Shopping Ads"
+    },
+    {
+      "commercial_searches_billions": "18.9",
+      "engaged_users_millions": "165.0",
+      "month": "2026-01-01",
+      "net_revenue_millions": "298.0",
+      "surface": "Visual Search Ads"
+    },
+    {
+      "commercial_searches_billions": "7.5",
+      "engaged_users_millions": "126.0",
+      "month": "2026-02-01",
+      "net_revenue_millions": "193.0",
+      "surface": "Brand Video Ads"
+    },
+    {
+      "commercial_searches_billions": "23.6",
+      "engaged_users_millions": "190.0",
+      "month": "2026-02-01",
+      "net_revenue_millions": "410.0",
+      "surface": "Performance Shopping Ads"
+    },
+    {
+      "commercial_searches_billions": "20.2",
+      "engaged_users_millions": "171.0",
+      "month": "2026-02-01",
+      "net_revenue_millions": "322.0",
+      "surface": "Visual Search Ads"
+    },
+    {
+      "commercial_searches_billions": "7.6",
+      "engaged_users_millions": "127.0",
+      "month": "2026-03-01",
+      "net_revenue_millions": "179.0",
+      "surface": "Brand Video Ads"
+    },
+    {
+      "commercial_searches_billions": "25.5",
+      "engaged_users_millions": "199.0",
+      "month": "2026-03-01",
+      "net_revenue_millions": "449.0",
+      "surface": "Performance Shopping Ads"
+    },
+    {
+      "commercial_searches_billions": "21.8",
+      "engaged_users_millions": "178.0",
+      "month": "2026-03-01",
+      "net_revenue_millions": "345.0",
+      "surface": "Visual Search Ads"
+    }
+  ],
+  "sql": "select\n  month,\n  surface,\n  net_revenue_millions,\n  engaged_users_millions,\n  commercial_searches_billions\nfrom ad_revenue_by_surface\norder by month, surface",
+  "sql_hash": "221bbbbb704caa39ad562ae24fb9c53d7c249e891dd5367bf2cf6328bc923bb5",
+  "truncated": false
+}

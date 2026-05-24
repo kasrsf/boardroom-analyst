@@ -17,44 +17,47 @@ def test_builds_context_from_manifest_catalog_and_schema_yaml(tmp_path):
         {
             "metadata": {"project_name": "boardroom_mart"},
             "nodes": {
-                "model.boardroom_mart.mrr_by_month": {
+                "model.boardroom_mart.ad_revenue_by_surface": {
                     "resource_type": "model",
-                    "name": "mrr_by_month",
+                    "name": "ad_revenue_by_surface",
                     "database": "local",
                     "schema": "main",
-                    "alias": "mrr_by_month",
-                    "description": "Monthly recurring revenue by segment.",
+                    "alias": "ad_revenue_by_surface",
+                    "description": "Monthly Pinterest-style advertising revenue by monetization surface.",
                     "columns": {
                         "month": {"name": "month", "description": "Calendar month."},
-                        "segment": {"name": "segment", "description": "Customer segment."},
-                        "mrr": {"name": "mrr", "description": "Monthly recurring revenue."},
+                        "surface": {"name": "surface", "description": "Monetization surface."},
+                        "net_revenue_millions": {
+                            "name": "net_revenue_millions",
+                            "description": "Net advertising revenue in USD millions.",
+                        },
                     },
                     "meta": {
-                        "grain": "one row per month and segment",
+                        "grain": "one row per month and monetization surface",
                         "metrics": [
                             {
-                                "name": "mrr",
-                                "description": "Monthly recurring revenue.",
-                                "formula": "sum(mrr)",
-                                "caveats": ["Excludes one-time services."],
+                                "name": "net_ad_revenue",
+                                "description": "Net advertising revenue.",
+                                "formula": "sum(net_revenue_millions)",
+                                "caveats": ["Synthetic demo metric."],
                             }
                         ],
                         "joins": [
                             {
-                                "name": "accounts",
+                                "name": "campaigns",
                                 "relationship": "many_to_one",
-                                "on": "mrr_by_month.account_id = accounts.account_id",
+                                "on": "ad_revenue_by_surface.campaign_id = campaigns.campaign_id",
                             }
                         ],
                     },
                 }
             },
             "metrics": {
-                "metric.boardroom_mart.net_revenue_retention": {
-                    "name": "net_revenue_retention",
-                    "description": "NRR by cohort.",
-                    "type": "ratio",
-                    "type_params": {"numerator": "retained_mrr", "denominator": "starting_mrr"},
+                "metric.boardroom_mart.commercial_search_intensity": {
+                    "name": "commercial_search_intensity",
+                    "description": "Commercial-intent searches per engaged user.",
+                    "type": "simple",
+                    "type_params": {"measure": "commercial_searches_billions"},
                 }
             },
         },
@@ -63,11 +66,11 @@ def test_builds_context_from_manifest_catalog_and_schema_yaml(tmp_path):
         dbt_dir / "target" / "catalog.json",
         {
             "nodes": {
-                "model.boardroom_mart.mrr_by_month": {
+                "model.boardroom_mart.ad_revenue_by_surface": {
                     "columns": {
                         "month": {"type": "DATE", "stats": {"count": {"value": 12}}},
-                        "segment": {"type": "VARCHAR", "stats": {"count": {"value": 36}}},
-                        "mrr": {"type": "DOUBLE", "stats": {"count": {"value": 36}}},
+                        "surface": {"type": "VARCHAR", "stats": {"count": {"value": 36}}},
+                        "net_revenue_millions": {"type": "DOUBLE", "stats": {"count": {"value": 36}}},
                     }
                 }
             }
@@ -77,11 +80,11 @@ def test_builds_context_from_manifest_catalog_and_schema_yaml(tmp_path):
         "version": 2,
         "models": [
             {
-                "name": "mrr_by_month",
+                "name": "ad_revenue_by_surface",
                 "meta": {
                     "priority_questions": [
-                        "Why did revenue slow last month?",
-                        "Which segment is driving expansion?",
+                        "Why did ad revenue growth slow last month?",
+                        "Which monetization surface is driving expansion?",
                     ]
                 },
             }
@@ -96,15 +99,15 @@ def test_builds_context_from_manifest_catalog_and_schema_yaml(tmp_path):
     assert context["project_name"] == "boardroom_mart"
     assert context["warnings"] == []
     table = context["tables"][0]
-    assert table["name"] == "mrr_by_month"
-    assert table["grain"] == "one row per month and segment"
-    assert table["columns"]["mrr"]["type"] == "DOUBLE"
-    assert table["columns"]["mrr"]["description"] == "Monthly recurring revenue."
-    assert table["metrics"][0]["name"] == "mrr"
-    assert context["metrics"][0]["name"] == "net_revenue_retention"
+    assert table["name"] == "ad_revenue_by_surface"
+    assert table["grain"] == "one row per month and monetization surface"
+    assert table["columns"]["net_revenue_millions"]["type"] == "DOUBLE"
+    assert table["columns"]["net_revenue_millions"]["description"] == "Net advertising revenue in USD millions."
+    assert table["metrics"][0]["name"] == "net_ad_revenue"
+    assert context["metrics"][0]["name"] == "commercial_search_intensity"
     assert table["priority_questions"] == [
-        "Why did revenue slow last month?",
-        "Which segment is driving expansion?",
+        "Why did ad revenue growth slow last month?",
+        "Which monetization surface is driving expansion?",
     ]
 
 

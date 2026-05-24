@@ -26,7 +26,7 @@
     "plugins/boardroom-analyst/agents/openai.yaml": "sha256:dc3ad18f0e89b9019feb7600dba8aa337560d9b8c280d7b84b98efb057f519d7",
     "plugins/boardroom-analyst/skills/boardroom-onboarding/SKILL.md": "sha256:8eb56aec764a254be9eedb8aad5b9317526b3cb96cc95f509f7829b3f849b6e3",
     "plugins/boardroom-analyst/skills/boardroom-brief/SKILL.md": "sha256:929a1758f3e62d9030297253cf2bdd63225582fd759f30ad77fb46b8f570c804",
-    "plugins/boardroom-analyst/skills/boardroom-query/SKILL.md": "sha256:9b5070f78c9b4c7260a581e698904e13281913f67e82fd79f5efa68cafdfecd0",
+    "plugins/boardroom-analyst/skills/boardroom-query/SKILL.md": "sha256:f9534396f9b2778b35668a8f4ce892f7844ed5c4de8a09f98e454a8c21abc38d",
     "plugins/boardroom-analyst/references/artifacts.md": "sha256:60130bdc6f3e5b7e79d62829fb56f7a1cd87d04c0c506f9193cc5a84cfffb515",
     "plugins/boardroom-analyst/references/trust-policy.md": "sha256:932d2463dcab127765d7e687380554646b295c2cb6fac04e5a9589b3984ef1c3",
     "plugins/boardroom-analyst/scripts/build_datamart_context.py": "sha256:2243d729b36f572a0a57d324d5aefa8560fafdcf10126873e2cdaee911feb54b",
