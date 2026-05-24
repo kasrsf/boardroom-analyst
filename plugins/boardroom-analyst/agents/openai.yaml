@@ -1,7 +1,7 @@
 interface:
   display_name: "Boardroom Analyst"
   short_description: "Governed executive analytics for dbt + DuckDB"
-  brand_color: "#155E75"
+  brand_color: "#E60023"
   default_prompt: "Use $boardroom-brief to explain why revenue changed using my documented DuckDB datamart."
 policy:
   allow_implicit_invocation: true

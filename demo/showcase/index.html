@@ -6,15 +6,15 @@
   <title>Boardroom Analyst Demo</title>
   <style>
     :root {
-      --ink: #102027;
-      --muted: #617079;
-      --line: #d8e2e6;
+      --ink: #111111;
+      --muted: #6e5f63;
+      --line: #ead7dc;
       --panel: #ffffff;
-      --soft: #eef5f6;
-      --accent: #0f6b76;
-      --accent-2: #c96f3a;
-      --ok: #15803d;
-      --warn: #a16207;
+      --soft: #fff2f4;
+      --accent: #e60023;
+      --accent-2: #bd081c;
+      --ok: #e60023;
+      --warn: #bd081c;
     }
 
     * { box-sizing: border-box; }
@@ -22,7 +22,7 @@
       margin: 0;
       min-height: 100vh;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(135deg, #f7faf9 0%, #e8f1f2 52%, #f9f7f3 100%);
+      background: linear-gradient(135deg, #ffffff 0%, #fff4f6 48%, #ffe9ee 100%);
       color: var(--ink);
       letter-spacing: 0;
     }
@@ -69,7 +69,7 @@
       grid-template-columns: 26px 1fr;
       gap: 10px;
       align-items: center;
-      color: #718087;
+      color: #7b6b70;
       font-size: 14px;
       font-weight: 650;
     }
@@ -77,7 +77,7 @@
     .dot {
       width: 22px;
       height: 22px;
-      border: 1px solid #b8c8ce;
+      border: 1px solid #e6c9cf;
       border-radius: 50%;
       display: grid;
       place-items: center;
@@ -176,7 +176,7 @@
       background: rgba(255, 255, 255, 0.86);
       border: 1px solid var(--line);
       border-radius: 8px;
-      box-shadow: 0 18px 50px rgba(16, 32, 39, 0.08);
+      box-shadow: 0 18px 50px rgba(17, 17, 17, 0.08);
       padding: 22px;
     }
 
@@ -235,8 +235,8 @@
 
     pre {
       margin: 0;
-      background: #0d1b20;
-      color: #e7f6f7;
+      background: #111111;
+      color: #fff7f8;
       border-radius: 8px;
       padding: 18px;
       font-size: 14px;
@@ -266,9 +266,9 @@
       border-radius: 5px 5px 0 0;
     }
 
-    .enterprise { background: #0f6b76; }
-    .mid { background: #5d9aa4; }
-    .smb { background: #c96f3a; }
+    .enterprise { background: #e60023; }
+    .mid { background: #111111; }
+    .smb { background: #f3a6b4; }
 
     .chart-labels {
       display: grid;
@@ -306,8 +306,8 @@
       gap: 8px;
       align-items: center;
       color: var(--accent);
-      border: 1px solid #b9d4d9;
-      background: #eef8f9;
+      border: 1px solid #f0b8c2;
+      background: #fff1f3;
       border-radius: 999px;
       padding: 6px 10px;
       font-size: 13px;

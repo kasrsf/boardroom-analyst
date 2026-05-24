@@ -11,6 +11,14 @@ caveats.
 The core idea: **make agentic analytics credible enough for executive review by
 forcing every claim to show its work.**
 
+## Demo
+
+<video controls src="demo/output/boardroom-analyst-demo.mp4" title="Boardroom Analyst demo recording"></video>
+
+The recording shows the end-to-end pitch flow: a leadership question, dbt
+semantic context, read-only SQL, evidence, an executive brief, and a governed
+follow-up answer.
+
 ## Why It Exists
 
 Most companies already have useful datamarts, but the last mile from governed

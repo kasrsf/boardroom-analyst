@@ -21,9 +21,9 @@
     "mutating_sql_allowed": false
   },
   "checksums": {
-    "plugins/boardroom-analyst/.codex-plugin/plugin.json": "sha256:20eb25ac7566190d96017a7eb5ba2e41bc1853624b50bb54e4a7b8f7bb3d2d49",
+    "plugins/boardroom-analyst/.codex-plugin/plugin.json": "sha256:efd7b6febddbd5089ae475f0a89271002c4840d71381197e959b7802984abb06",
     "plugins/boardroom-analyst/.claude-plugin/plugin.json": "sha256:94be9b230c813a2d6b2a06958f0f0daf5fd44b20b937bbeb89ba8bbe89da8477",
-    "plugins/boardroom-analyst/agents/openai.yaml": "sha256:3fb5720db2351c599bd13cf785d4c465e05703cb3a6c3f9d38c2966efdae0cdd",
+    "plugins/boardroom-analyst/agents/openai.yaml": "sha256:dc3ad18f0e89b9019feb7600dba8aa337560d9b8c280d7b84b98efb057f519d7",
     "plugins/boardroom-analyst/skills/boardroom-onboarding/SKILL.md": "sha256:8eb56aec764a254be9eedb8aad5b9317526b3cb96cc95f509f7829b3f849b6e3",
     "plugins/boardroom-analyst/skills/boardroom-brief/SKILL.md": "sha256:929a1758f3e62d9030297253cf2bdd63225582fd759f30ad77fb46b8f570c804",
     "plugins/boardroom-analyst/skills/boardroom-query/SKILL.md": "sha256:9b5070f78c9b4c7260a581e698904e13281913f67e82fd79f5efa68cafdfecd0",

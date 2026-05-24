@@ -37,7 +37,7 @@
     "defaultPrompt": [
       "Use Boardroom Analyst to explain this month's executive metrics from my documented DuckDB datamart."
     ],
-    "brandColor": "#155E75",
+    "brandColor": "#E60023",
     "screenshots": []
   }
 }
