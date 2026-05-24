@@ -4,7 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from ceo_datamart_insights.duckdb_runner import execute_read_only_query, write_query_result
+from boardroom_analyst.duckdb_runner import execute_read_only_query, write_query_result
 
 
 def main() -> int:

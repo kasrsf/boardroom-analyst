@@ -1,0 +1,42 @@
+{
+  "name": "boardroom-analyst",
+  "version": "0.1.0",
+  "release_channel": "internal-pilot",
+  "artifact_format": "agent-skill-plugin",
+  "positioning": "Governed executive analytics from dbt-documented DuckDB datamarts.",
+  "compatible_hosts": [
+    "codex",
+    "claude-code"
+  ],
+  "license_policy": {
+    "license": "LicenseRef-Commercial",
+    "marketplace_ready": true,
+    "runtime_entitlement_checks": false,
+    "payment_enforcement": "deferred-to-marketplace"
+  },
+  "security": {
+    "local_only": true,
+    "network_required": false,
+    "database_access": "duckdb-read-only",
+    "mutating_sql_allowed": false
+  },
+  "checksums": {
+    "plugins/boardroom-analyst/.codex-plugin/plugin.json": "sha256:20eb25ac7566190d96017a7eb5ba2e41bc1853624b50bb54e4a7b8f7bb3d2d49",
+    "plugins/boardroom-analyst/.claude-plugin/plugin.json": "sha256:94be9b230c813a2d6b2a06958f0f0daf5fd44b20b937bbeb89ba8bbe89da8477",
+    "plugins/boardroom-analyst/agents/openai.yaml": "sha256:3fb5720db2351c599bd13cf785d4c465e05703cb3a6c3f9d38c2966efdae0cdd",
+    "plugins/boardroom-analyst/skills/boardroom-onboarding/SKILL.md": "sha256:8eb56aec764a254be9eedb8aad5b9317526b3cb96cc95f509f7829b3f849b6e3",
+    "plugins/boardroom-analyst/skills/boardroom-brief/SKILL.md": "sha256:929a1758f3e62d9030297253cf2bdd63225582fd759f30ad77fb46b8f570c804",
+    "plugins/boardroom-analyst/skills/boardroom-query/SKILL.md": "sha256:9b5070f78c9b4c7260a581e698904e13281913f67e82fd79f5efa68cafdfecd0",
+    "plugins/boardroom-analyst/references/artifacts.md": "sha256:60130bdc6f3e5b7e79d62829fb56f7a1cd87d04c0c506f9193cc5a84cfffb515",
+    "plugins/boardroom-analyst/references/trust-policy.md": "sha256:932d2463dcab127765d7e687380554646b295c2cb6fac04e5a9589b3984ef1c3",
+    "plugins/boardroom-analyst/scripts/build_datamart_context.py": "sha256:2243d729b36f572a0a57d324d5aefa8560fafdcf10126873e2cdaee911feb54b",
+    "plugins/boardroom-analyst/scripts/run_duckdb_query.py": "sha256:89735043112320a9c08170203a3aac300399390d8122020cc6c2c470a970d777",
+    "plugins/boardroom-analyst/scripts/write_insight_brief.py": "sha256:f4a1e358b2f6d9563d374d1734ba655645a757807917711a77ba59ee76786390",
+    "plugins/boardroom-analyst/scripts/export_chart_csv.py": "sha256:db638f99b1322bd2eaacb250d8b96f3649c6bf50dc3341c19d2e74c3145b00d4",
+    "plugins/boardroom-analyst/scripts/boardroom_analyst/__init__.py": "sha256:ba6859927d4b1dec4d46d2f97a3fdbe7c66c8493e9ffc3a353083fd0c9a3190d",
+    "plugins/boardroom-analyst/scripts/boardroom_analyst/dbt_context.py": "sha256:cc3c75140aa951cfac3e4d7a17230d9ae5b32eff5e11d8e675378827e9d596da",
+    "plugins/boardroom-analyst/scripts/boardroom_analyst/duckdb_runner.py": "sha256:1a91550859d5e4e3073371fe2ded6c901a5a75594391842ddfaeab29be577a14",
+    "plugins/boardroom-analyst/scripts/boardroom_analyst/report_builder.py": "sha256:25d04c31eaf966999b51b2071cfe877a6b7b4ab988d517ee0a6cb5dee21b2919",
+    "plugins/boardroom-analyst/scripts/boardroom_analyst/sql_safety.py": "sha256:d806bb79bffd4365b7480af81f9f27121e08c9f5f16ea390b3d60079a3f7f33e"
+  }
+}

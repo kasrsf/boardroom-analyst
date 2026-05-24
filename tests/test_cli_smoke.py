@@ -7,7 +7,7 @@ import duckdb
 
 def test_packaged_scripts_smoke_with_synthetic_fixture(tmp_path):
     root = __import__("pathlib").Path(__file__).resolve().parents[1]
-    plugin_scripts = root / "plugins" / "ceo-datamart-insights" / "scripts"
+    plugin_scripts = root / "plugins" / "boardroom-analyst" / "scripts"
     db_path = tmp_path / "saas.duckdb"
     con = duckdb.connect(str(db_path))
     con.execute(

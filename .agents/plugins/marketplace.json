@@ -5,10 +5,10 @@
   },
   "plugins": [
     {
-      "name": "ceo-datamart-insights",
+      "name": "boardroom-analyst",
       "source": {
         "source": "local",
-        "path": "./plugins/ceo-datamart-insights"
+        "path": "./plugins/boardroom-analyst"
       },
       "policy": {
         "installation": "AVAILABLE",

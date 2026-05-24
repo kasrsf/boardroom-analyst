@@ -23,7 +23,7 @@ def write_insight_brief(run: dict[str, Any], output_dir: str | Path) -> Path:
 
 def _render_brief(run: dict[str, Any]) -> str:
     lines = [
-        "# CEO Insight Brief",
+        "# Boardroom Brief",
         "",
         f"Run: `{run.get('run_id', 'untracked')}`",
         f"Question: {run.get('question', '')}",

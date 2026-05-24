@@ -1,9 +1,9 @@
 ---
-name: ceo-insight-brief
-description: Create a concise CEO insight brief with SQL-backed findings, chart data, query appendix, provenance, and caveats from a dbt-documented DuckDB datamart. Use when the user asks for an executive data brief, business performance diagnosis, KPI explanation, or board-ready insight from a local datamart.
+name: boardroom-brief
+description: Create a concise executive brief with SQL-backed findings, chart data, query appendix, provenance, and caveats from a dbt-documented DuckDB datamart. Use when the user asks for an executive data brief, business performance diagnosis, KPI explanation, or board-ready insight from a local datamart.
 ---
 
-# CEO Insight Brief
+# Boardroom Brief
 
 Produce a trust-first executive memo, not a generic dashboard.
 
@@ -11,7 +11,7 @@ Produce a trust-first executive memo, not a generic dashboard.
 
 Require:
 - DuckDB database path.
-- `datamart_context.json`; if missing, run `$datamart-onboarding` first.
+- `datamart_context.json`; if missing, run `$boardroom-onboarding` first.
 - CEO question or decision context.
 
 ## Workflow

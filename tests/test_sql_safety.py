@@ -1,6 +1,6 @@
 import pytest
 
-from ceo_datamart_insights.sql_safety import UnsafeSqlError, validate_read_only_sql
+from boardroom_analyst.sql_safety import UnsafeSqlError, validate_read_only_sql
 
 
 def test_allows_single_select_and_normalizes_trailing_semicolon():

@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "project_name": "saas_ceo_mart"
+    "project_name": "saas_boardroom_mart"
   },
   "nodes": {
-    "model.saas_ceo_mart.mrr_by_month": {
+    "model.saas_boardroom_mart.mrr_by_month": {
       "resource_type": "model",
       "name": "mrr_by_month",
       "database": "local",
@@ -40,7 +40,7 @@
     }
   },
   "metrics": {
-    "metric.saas_ceo_mart.mrr": {
+    "metric.saas_boardroom_mart.mrr": {
       "name": "mrr",
       "description": "Monthly recurring revenue.",
       "type": "simple",

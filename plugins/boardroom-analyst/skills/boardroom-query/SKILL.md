@@ -1,9 +1,9 @@
 ---
-name: ceo-query-analyst
-description: Answer CEO follow-up questions by running local read-only DuckDB SQL against a dbt-documented datamart, citing query provenance and caveats. Use when the user asks drill-down questions after an insight brief or wants to query executive metrics interactively.
+name: boardroom-query
+description: Answer executive follow-up questions by running local read-only DuckDB SQL against a dbt-documented datamart, citing query provenance and caveats. Use when the user asks drill-down questions after a Boardroom Analyst brief or wants to query executive metrics interactively.
 ---
 
-# CEO Query Analyst
+# Boardroom Query
 
 Answer follow-up questions through a local query loop with provenance.
 

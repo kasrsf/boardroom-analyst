@@ -1,6 +1,6 @@
 import json
 
-from ceo_datamart_insights.report_builder import write_insight_brief
+from boardroom_analyst.report_builder import write_insight_brief
 
 
 def test_writes_brief_with_claim_provenance_chart_sources_and_sql_appendix(tmp_path):
@@ -41,7 +41,7 @@ def test_writes_brief_with_claim_provenance_chart_sources_and_sql_appendix(tmp_p
 
     assert output.name == "brief.md"
     brief = output.read_text(encoding="utf-8")
-    assert "# CEO Insight Brief" in brief
+    assert "# Boardroom Brief" in brief
     assert "Enterprise MRR fell 10% month over month. [`q001`]" in brief
     assert "MRR by segment" in brief
     assert "Source query: `q001`" in brief

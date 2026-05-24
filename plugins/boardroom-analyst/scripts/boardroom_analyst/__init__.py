@@ -1,4 +1,4 @@
-"""Deterministic helpers for the CEO Datamart Insights skill pack."""
+"""Deterministic helpers for the Boardroom Analyst skill pack."""
 
 __all__ = [
     "dbt_context",

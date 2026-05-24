@@ -4,7 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from ceo_datamart_insights.dbt_context import build_datamart_context, write_datamart_context
+from boardroom_analyst.dbt_context import build_datamart_context, write_datamart_context
 
 
 def main() -> int:

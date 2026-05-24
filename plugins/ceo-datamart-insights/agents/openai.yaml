@@ -1,7 +1,0 @@
-interface:
-  display_name: "CEO Datamart Insights"
-  short_description: "Trusted CEO insights from dbt and DuckDB"
-  brand_color: "#155E75"
-  default_prompt: "Use $ceo-insight-brief to explain why revenue changed using my dbt-documented DuckDB datamart."
-policy:
-  allow_implicit_invocation: true

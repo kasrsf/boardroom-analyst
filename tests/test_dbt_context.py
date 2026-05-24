@@ -2,7 +2,7 @@ import json
 
 import yaml
 
-from ceo_datamart_insights.dbt_context import build_datamart_context
+from boardroom_analyst.dbt_context import build_datamart_context
 
 
 def write_json(path, data):
@@ -15,9 +15,9 @@ def test_builds_context_from_manifest_catalog_and_schema_yaml(tmp_path):
     write_json(
         dbt_dir / "target" / "manifest.json",
         {
-            "metadata": {"project_name": "ceo_mart"},
+            "metadata": {"project_name": "boardroom_mart"},
             "nodes": {
-                "model.ceo_mart.mrr_by_month": {
+                "model.boardroom_mart.mrr_by_month": {
                     "resource_type": "model",
                     "name": "mrr_by_month",
                     "database": "local",
@@ -50,7 +50,7 @@ def test_builds_context_from_manifest_catalog_and_schema_yaml(tmp_path):
                 }
             },
             "metrics": {
-                "metric.ceo_mart.net_revenue_retention": {
+                "metric.boardroom_mart.net_revenue_retention": {
                     "name": "net_revenue_retention",
                     "description": "NRR by cohort.",
                     "type": "ratio",
@@ -63,7 +63,7 @@ def test_builds_context_from_manifest_catalog_and_schema_yaml(tmp_path):
         dbt_dir / "target" / "catalog.json",
         {
             "nodes": {
-                "model.ceo_mart.mrr_by_month": {
+                "model.boardroom_mart.mrr_by_month": {
                     "columns": {
                         "month": {"type": "DATE", "stats": {"count": {"value": 12}}},
                         "segment": {"type": "VARCHAR", "stats": {"count": {"value": 36}}},
@@ -93,7 +93,7 @@ def test_builds_context_from_manifest_catalog_and_schema_yaml(tmp_path):
 
     context = build_datamart_context(dbt_dir)
 
-    assert context["project_name"] == "ceo_mart"
+    assert context["project_name"] == "boardroom_mart"
     assert context["warnings"] == []
     table = context["tables"][0]
     assert table["name"] == "mrr_by_month"
@@ -114,7 +114,7 @@ def test_context_warns_when_docs_are_not_trustworthy(tmp_path):
         dbt_dir / "target" / "manifest.json",
         {
             "nodes": {
-                "model.ceo_mart.ambiguous_revenue": {
+                "model.boardroom_mart.ambiguous_revenue": {
                     "resource_type": "model",
                     "name": "ambiguous_revenue",
                     "schema": "main",

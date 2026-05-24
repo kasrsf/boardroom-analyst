@@ -1,9 +1,9 @@
 ---
-name: datamart-onboarding
-description: Validate a local DuckDB database and dbt artifacts, then build datamart_context.json for trusted CEO analysis. Use when the user connects a DuckDB datamart, dbt project, manifest.json, catalog.json, or asks whether their data mart is ready for executive insight.
+name: boardroom-onboarding
+description: Validate a local DuckDB database and dbt artifacts, then build datamart_context.json for governed executive analysis. Use when the user connects a DuckDB datamart, dbt project, manifest.json, catalog.json, or asks whether their data mart is ready for Boardroom Analyst.
 ---
 
-# Datamart Onboarding
+# Boardroom Onboarding
 
 Build the semantic context before answering business questions.
 

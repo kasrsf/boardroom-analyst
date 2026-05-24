@@ -1,13 +1,13 @@
 {
   "name": "skills-marketplace",
   "owner": {
-    "name": "Skills Marketplace",
+    "name": "Boardroom Analyst Team",
     "email": "support@example.com"
   },
   "plugins": [
     {
-      "name": "ceo-datamart-insights",
-      "source": "./plugins/ceo-datamart-insights",
+      "name": "boardroom-analyst",
+      "source": "./plugins/boardroom-analyst",
       "description": "Trusted CEO insights from dbt-documented DuckDB datamarts."
     }
   ]

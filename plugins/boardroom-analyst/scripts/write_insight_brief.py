@@ -4,7 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from ceo_datamart_insights.report_builder import write_insight_brief
+from boardroom_analyst.report_builder import write_insight_brief
 
 
 def main() -> int:

@@ -1,8 +1,8 @@
 import duckdb
 import pytest
 
-from ceo_datamart_insights.duckdb_runner import execute_read_only_query
-from ceo_datamart_insights.sql_safety import UnsafeSqlError
+from boardroom_analyst.duckdb_runner import execute_read_only_query
+from boardroom_analyst.sql_safety import UnsafeSqlError
 
 
 def create_saas_db(path):

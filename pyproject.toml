@@ -1,7 +1,7 @@
 [project]
-name = "ceo-datamart-insights"
+name = "boardroom-analyst"
 version = "0.1.0"
-description = "Agent skill pack helpers for trusted CEO insight briefs over dbt-documented DuckDB datamarts."
+description = "Agent skill pack helpers for governed executive analytics over dbt-documented DuckDB datamarts."
 requires-python = ">=3.11"
 dependencies = [
   "duckdb>=1.0.0",
@@ -18,8 +18,8 @@ requires = ["setuptools>=69.0.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-where = ["plugins/ceo-datamart-insights/scripts"]
+where = ["plugins/boardroom-analyst/scripts"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["plugins/ceo-datamart-insights/scripts"]
+pythonpath = ["plugins/boardroom-analyst/scripts"]

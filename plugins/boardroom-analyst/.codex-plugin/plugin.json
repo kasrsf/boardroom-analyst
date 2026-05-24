@@ -1,0 +1,43 @@
+{
+  "name": "boardroom-analyst",
+  "version": "0.1.0",
+  "description": "Governed executive analytics from dbt-documented DuckDB datamarts.",
+  "author": {
+    "name": "Boardroom Analyst Team",
+    "email": "support@example.com",
+    "url": "https://github.com/kasrsf/boardroom-analyst"
+  },
+  "homepage": "https://github.com/kasrsf/boardroom-analyst",
+  "repository": "https://github.com/kasrsf/boardroom-analyst",
+  "license": "LicenseRef-Commercial",
+  "keywords": [
+    "duckdb",
+    "dbt",
+    "analytics",
+    "ceo",
+    "datamart",
+    "visualization",
+    "business-intelligence"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Boardroom Analyst",
+    "shortDescription": "Governed executive analytics for dbt + DuckDB",
+    "longDescription": "Boardroom Analyst turns a documented DuckDB datamart into executive-ready answers with read-only SQL, chart-ready data, traceable claims, and caveats that survive review.",
+    "developerName": "Boardroom Analyst Team",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/kasrsf/boardroom-analyst",
+    "privacyPolicyURL": "https://github.com/kasrsf/boardroom-analyst",
+    "termsOfServiceURL": "https://github.com/kasrsf/boardroom-analyst",
+    "defaultPrompt": [
+      "Use Boardroom Analyst to explain this month's executive metrics from my documented DuckDB datamart."
+    ],
+    "brandColor": "#155E75",
+    "screenshots": []
+  }
+}
