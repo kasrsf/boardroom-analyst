@@ -13,6 +13,8 @@ forcing every claim to show its work.**
 
 ## Demo
 
+[Hosted showcase: presentation + live demo](https://boardroom-analyst.kasrsf.com/)
+
 [![Boardroom Analyst demo recording](demo/output/boardroom-analyst-demo.gif)](demo/output/boardroom-analyst-demo.mp4)
 
 The animated preview is optimized for GitHub README rendering. Open the
@@ -177,6 +179,7 @@ This repo includes a manager-ready pitch package:
 - `marketing/executive-pitch-brief.md`: executive funding angle.
 - `marketing/demo-script.md`: narration for a live or recorded demo.
 - `marketing/faq.md`: likely manager questions and crisp answers.
+- `site/index.html`: hosted showcase page with deck, demo, and recording links.
 - `demo/build_demo.py`: builds a complete synthetic demo.
 - `demo/showcase/index.html`: browser showcase used for the recording.
 - `demo/output/boardroom-analyst-demo.mp4`: short demo recording artifact.

@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Boardroom Analyst Demo</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <style>
+    :root {
+      --ink: #111111;
+      --muted: #6e5f63;
+      --line: #ead7dc;
+      --panel: #ffffff;
+      --soft: #fff2f4;
+      --accent: #e60023;
+      --accent-2: #bd081c;
+      --ok: #e60023;
+      --warn: #bd081c;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #ffffff 0%, #fff4f6 48%, #ffe9ee 100%);
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    .frame {
+      width: 1280px;
+      height: 720px;
+      margin: 0 auto;
+      padding: 40px 48px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 28px;
+    }
+
+    aside {
+      border-right: 1px solid var(--line);
+      padding-right: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-size: 25px;
+      font-weight: 750;
+      line-height: 1.1;
+    }
+
+    .tagline {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .progress {
+      display: grid;
+      gap: 10px;
+      margin-top: 44px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 10px;
+      align-items: center;
+      color: #7b6b70;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .dot {
+      width: 22px;
+      height: 22px;
+      border: 1px solid #e6c9cf;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      background: #fff;
+    }
+
+    body[data-step="1"] .step:nth-child(1),
+    body[data-step="2"] .step:nth-child(2),
+    body[data-step="3"] .step:nth-child(3),
+    body[data-step="4"] .step:nth-child(4),
+    body[data-step="5"] .step:nth-child(5),
+    body[data-step="6"] .step:nth-child(6) {
+      color: var(--accent);
+    }
+
+    body[data-step="1"] .step:nth-child(1) .dot,
+    body[data-step="2"] .step:nth-child(2) .dot,
+    body[data-step="3"] .step:nth-child(3) .dot,
+    body[data-step="4"] .step:nth-child(4) .dot,
+    body[data-step="5"] .step:nth-child(5) .dot,
+    body[data-step="6"] .step:nth-child(6) .dot {
+      color: #fff;
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    main {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 400ms ease, transform 400ms ease;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 26px;
+    }
+
+    body[data-step="1"] .slide[data-slide="1"],
+    body[data-step="2"] .slide[data-slide="2"],
+    body[data-step="3"] .slide[data-slide="3"],
+    body[data-step="4"] .slide[data-slide="4"],
+    body[data-step="5"] .slide[data-slide="5"],
+    body[data-step="6"] .slide[data-slide="6"] {
+      opacity: 1;
+      transform: translateY(0);
+      z-index: 2;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: 50px;
+      line-height: 1.03;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .hero-grid,
+    .two-col,
+    .three-col {
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .hero-grid { grid-template-columns: 1.05fr 0.95fr; }
+    .two-col { grid-template-columns: 1fr 1fr; }
+    .three-col { grid-template-columns: repeat(3, 1fr); }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 18px 50px rgba(17, 17, 17, 0.08);
+      padding: 22px;
+    }
+
+    .question {
+      font-size: 24px;
+      line-height: 1.25;
+      font-weight: 760;
+      padding: 28px;
+      min-height: 198px;
+      display: grid;
+      align-content: center;
+    }
+
+    .mini-title {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+    }
+
+    .metric {
+      display: grid;
+      gap: 8px;
+    }
+
+    .metric strong {
+      font-size: 34px;
+      line-height: 1;
+      overflow-wrap: anywhere;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 12px;
+      font-size: 17px;
+    }
+
+    .check {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      line-height: 1.35;
+    }
+
+    .check b { color: var(--ok); }
+
+    code, pre {
+      font-family: "SFMono-Regular", Consolas, monospace;
+    }
+
+    pre {
+      margin: 0;
+      background: #111111;
+      color: #fff7f8;
+      border-radius: 8px;
+      padding: 18px;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow: hidden;
+    }
+
+    .chart {
+      height: 260px;
+      display: grid;
+      align-items: end;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      padding-top: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .bar-group {
+      display: grid;
+      align-items: end;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      height: 230px;
+    }
+
+    .bar {
+      border-radius: 5px 5px 0 0;
+    }
+
+    .shopping { background: #e60023; }
+    .visual-search { background: #111111; }
+    .brand-video { background: #f3a6b4; }
+
+    .chart-labels {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .finding {
+      display: grid;
+      gap: 10px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 18px;
+    }
+
+    .finding:last-child {
+      border-bottom: 0;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .finding strong {
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .query-chip {
+      display: inline-flex;
+      width: fit-content;
+      gap: 8px;
+      align-items: center;
+      color: var(--accent);
+      border: 1px solid #f0b8c2;
+      background: #fff1f3;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .answer {
+      font-size: 28px;
+      line-height: 1.25;
+      font-weight: 780;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <aside>
+      <div>
+        <div class="brand">Boardroom Analyst</div>
+        <div class="tagline">Governed executive analytics from documented datamarts.</div>
+        <div class="progress">
+          <div class="step"><div class="dot">1</div><div>CEO question</div></div>
+          <div class="step"><div class="dot">2</div><div>Semantic context</div></div>
+          <div class="step"><div class="dot">3</div><div>Read-only SQL</div></div>
+          <div class="step"><div class="dot">4</div><div>Evidence</div></div>
+          <div class="step"><div class="dot">5</div><div>Brief</div></div>
+          <div class="step"><div class="dot">6</div><div>Follow-up</div></div>
+        </div>
+      </div>
+        <div class="footer-note">Synthetic visual-discovery data. Local DuckDB. Every claim cites a query.</div>
+    </aside>
+
+    <main>
+      <section class="slide" data-slide="1">
+        <div>
+          <h1>Give the CEO a reviewable answer in minutes.</h1>
+        </div>
+        <div class="hero-grid">
+          <div class="panel question">"Why did ad revenue growth slow in March?"</div>
+          <div class="panel">
+            <div class="mini-title">What the agent must prove</div>
+            <div class="checklist">
+              <div class="check"><b>✓</b><span>Metric definition comes from dbt docs.</span></div>
+              <div class="check"><b>✓</b><span>SQL runs locally against DuckDB in read-only mode.</span></div>
+              <div class="check"><b>✓</b><span>Every claim cites a source query and caveat.</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <div>
+          <h2>First, Boardroom Analyst checks whether the datamart is safe to reason over.</h2>
+        </div>
+        <div class="three-col">
+          <div class="panel metric"><span>dbt project</span><strong>Discovery mart</strong><span>visual_discovery_boardroom_mart loaded</span></div>
+          <div class="panel metric"><span>model grain</span><strong>month × surface</strong><span>documented in metadata</span></div>
+          <div class="panel metric"><span>warnings</span><strong>0</strong><span>ready for executive analysis</span></div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <div>
+          <h2>The agent plans claims against query IDs before writing the narrative.</h2>
+        </div>
+        <div class="two-col">
+          <pre>q001_surface_revenue
+
+select month, surface, net_revenue_millions
+from ad_revenue_by_surface
+order by month, surface</pre>
+          <pre>q002_revenue_growth_waterfall
+
+with totals as (...)
+select month, total_revenue_millions,
+       revenue_change_millions
+from changes
+order by month</pre>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <div>
+          <h2>The evidence shows shopping and visual search grew while brand video dragged.</h2>
+        </div>
+        <div class="panel">
+          <div class="chart">
+            <div class="bar-group">
+              <div class="bar shopping" style="height: 178px"></div>
+              <div class="bar visual-search" style="height: 142px"></div>
+              <div class="bar brand-video" style="height: 89px"></div>
+            </div>
+            <div class="bar-group">
+              <div class="bar shopping" style="height: 196px"></div>
+              <div class="bar visual-search" style="height: 154px"></div>
+              <div class="bar brand-video" style="height: 92px"></div>
+            </div>
+            <div class="bar-group">
+              <div class="bar shopping" style="height: 214px"></div>
+              <div class="bar visual-search" style="height: 165px"></div>
+              <div class="bar brand-video" style="height: 85px"></div>
+            </div>
+          </div>
+          <div class="chart-labels"><div>Jan</div><div>Feb</div><div>Mar</div></div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <div>
+          <h2>The output is executive-readable and audit-ready.</h2>
+        </div>
+        <div class="panel">
+          <div class="finding">
+            <strong>Total ad revenue increased from $925M to $973M, but monthly growth slowed from +$69M to +$48M.</strong>
+            <span class="query-chip">source q002_revenue_growth_waterfall</span>
+          </div>
+          <div class="finding">
+            <strong>Brand Video Ads declined by $14M while Shopping and Visual Search added $62M combined.</strong>
+            <span class="query-chip">source q001_surface_revenue</span>
+          </div>
+          <div class="small">Includes SQL appendix, result hashes, chart CSVs, and caveats.</div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="6">
+        <div>
+          <h2>Follow-up questions reuse the same governed context.</h2>
+        </div>
+        <div class="hero-grid">
+          <div class="panel question">"Which surface should I ask the ads team about first?"</div>
+          <div class="panel">
+            <div class="answer">Brand Video Ads: -$14M in March, while shopping-intent surfaces kept compounding.</div>
+            <p style="margin-top: 16px">The answer stays tied to `q001_surface_revenue`, the documented grain, and the same caveats.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const explicitStep = params.get("step");
+    const stepCount = 6;
+    let step = explicitStep ? Number(explicitStep) : 1;
+    document.body.dataset.step = String(Math.min(Math.max(step, 1), stepCount));
+    if (!explicitStep) {
+      setInterval(() => {
+        step = step === stepCount ? 1 : step + 1;
+        document.body.dataset.step = String(step);
+      }, 2600);
+    }
+  </script>
+</body>
+</html>
