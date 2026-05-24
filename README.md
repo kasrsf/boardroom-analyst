@@ -172,10 +172,9 @@ The intended loop is:
 
 This repo includes a manager-ready pitch package:
 
+- `marketing/slides/boardroom-analyst-internal-pitch.pptx`: editable presentation deck for the internal funding pitch.
 - `marketing/one-pager.md`: concise product one-pager.
-- `marketing/manager-pitch.md`: internal proposal framing.
 - `marketing/executive-pitch-brief.md`: executive funding angle.
-- `marketing/pitch-deck.md`: slide-by-slide talk track.
 - `marketing/demo-script.md`: narration for a live or recorded demo.
 - `marketing/faq.md`: likely manager questions and crisp answers.
 - `demo/build_demo.py`: builds a complete synthetic demo.
