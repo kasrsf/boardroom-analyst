@@ -162,6 +162,12 @@
       border-color: var(--line-strong);
     }
 
+    .btn:disabled {
+      cursor: wait;
+      opacity: 0.72;
+      transform: none;
+    }
+
     .btn.primary {
       color: #ffffff;
       border-color: var(--accent);
@@ -300,6 +306,17 @@
       padding: 20px;
       display: grid;
       gap: 16px;
+      transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    .query-box[data-run-state="running"] {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, #fff3f5 100%);
+      box-shadow: 0 0 0 4px rgba(230, 0, 35, 0.08), var(--shadow);
+    }
+
+    .query-box[data-run-state="complete"] {
+      border-color: rgba(15, 138, 75, 0.35);
     }
 
     .query-title {
@@ -335,6 +352,21 @@
       white-space: nowrap;
     }
 
+    .query-status[data-state="running"] {
+      color: var(--accent);
+    }
+
+    .query-status[data-state="running"] .status-dot {
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(230, 0, 35, 0.12);
+      animation: pulse 900ms ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.35); opacity: 0.72; }
+    }
+
     .composer {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -364,6 +396,107 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
+    }
+
+    .run-progress {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 13px;
+      display: grid;
+      gap: 12px;
+      background: #ffffff;
+      transition: border-color 180ms ease, background 180ms ease;
+    }
+
+    .run-progress[data-active="true"] {
+      border-color: #f0aab6;
+      background: #fff4f6;
+    }
+
+    .run-progress-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .run-progress-head strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .run-progress-head span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .run-percent {
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 880;
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #ffe1e6;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+      transition: width 360ms ease;
+    }
+
+    .run-progress[data-active="true"] .progress-bar {
+      animation: progressShine 900ms ease-in-out infinite;
+    }
+
+    @keyframes progressShine {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.18); }
+    }
+
+    .progress-steps {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .progress-step {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px;
+      color: var(--muted);
+      background: #fffafb;
+      font-size: 11px;
+      font-weight: 820;
+      line-height: 1.2;
+      display: grid;
+      align-content: center;
+    }
+
+    .progress-step[data-state="active"] {
+      color: var(--accent-dark);
+      border-color: var(--accent);
+      background: #fff0f2;
+      box-shadow: 0 0 0 3px rgba(230, 0, 35, 0.08);
+    }
+
+    .progress-step[data-state="done"] {
+      color: var(--green);
+      border-color: rgba(15, 138, 75, 0.26);
+      background: #f2fff8;
     }
 
     .sample-picker {
@@ -929,6 +1062,10 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .progress-steps {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .rail {
         grid-template-columns: 1fr;
       }
@@ -956,12 +1093,14 @@
 
       .steps,
       .metrics,
-      .sample-buttons {
+      .sample-buttons,
+      .progress-steps {
         grid-template-columns: 1fr;
       }
 
       .query-title,
-      .section-title {
+      .section-title,
+      .run-progress-head {
         flex-direction: column;
       }
 
@@ -1040,15 +1179,15 @@
       </aside>
 
       <main class="main">
-        <section class="query-box" aria-labelledby="questionTitle">
+        <section class="query-box" id="queryBox" data-run-state="idle" aria-labelledby="questionTitle">
           <div class="query-title">
             <div>
               <h2 id="questionTitle">Ask a boardroom-level question</h2>
               <p>The MVP answers only when metric definitions, grain, and source SQL are reviewable.</p>
             </div>
-            <div class="query-status">
+            <div class="query-status" id="queryStatus" data-state="ready">
               <span class="status-dot" aria-hidden="true"></span>
-              Analysis ready
+              <span id="queryStatusText">Analysis ready</span>
             </div>
           </div>
           <div class="composer">
@@ -1057,6 +1196,25 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4 20-7Z"/></svg>
               Analyze
             </button>
+          </div>
+          <div class="run-progress" id="runProgress" data-active="false" aria-live="polite">
+            <div class="run-progress-head">
+              <div>
+                <strong id="runProgressTitle">Ready to analyze sample data</strong>
+                <span id="runProgressDetail">Choose a question, then run a local read-only query plan.</span>
+              </div>
+              <div class="run-percent" id="runProgressPercent">0%</div>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <div class="progress-bar" id="runProgressBar"></div>
+            </div>
+            <div class="progress-steps" id="progressSteps">
+              <div class="progress-step" data-stage-index="0" data-state="pending">Map question</div>
+              <div class="progress-step" data-stage-index="1" data-state="pending">Validate SQL</div>
+              <div class="progress-step" data-stage-index="2" data-state="pending">Run DuckDB</div>
+              <div class="progress-step" data-stage-index="3" data-state="pending">Hash results</div>
+              <div class="progress-step" data-stage-index="4" data-state="pending">Draft brief</div>
+            </div>
           </div>
           <div class="sample-picker" aria-label="Sample-data questions">
             <div class="sample-label">Ask from sample data</div>
@@ -1452,8 +1610,27 @@ order by month, surface;`,
     const briefBody = document.getElementById("briefBody");
     const sqlText = document.getElementById("sqlText");
     const followupAnswer = document.getElementById("followupAnswer");
+    const queryBox = document.getElementById("queryBox");
+    const queryStatus = document.getElementById("queryStatus");
+    const queryStatusText = document.getElementById("queryStatusText");
+    const runProgress = document.getElementById("runProgress");
+    const runProgressTitle = document.getElementById("runProgressTitle");
+    const runProgressDetail = document.getElementById("runProgressDetail");
+    const runProgressPercent = document.getElementById("runProgressPercent");
+    const runProgressBar = document.getElementById("runProgressBar");
+    const progressStepElements = Array.from(document.querySelectorAll(".progress-step"));
+    const askButton = document.getElementById("askButton");
+    const runSampleButton = document.getElementById("runSample");
+    const runStages = [
+      ["ask", "Mapping question to metrics", "Checking sample-question intent against documented dbt context.", 18],
+      ["analyze", "Validating read-only SQL", "Rejecting writes and confirming the supported month x surface grain.", 38],
+      ["analyze", "Running local DuckDB queries", "Executing the source query plan and collecting result rows.", 64],
+      ["brief", "Hashing results and caveats", "Recording query IDs, result hashes, chart sources, and caveats.", 84],
+      ["followup", "Brief ready for review", "Executive answer, SQL appendix, and follow-up context are ready.", 100]
+    ];
     let activeScenario = sampleScenarios[0];
     let activeTrustTab = "queries";
+    let runTimer = null;
 
     function renderTrust(tab) {
       const trustData = {
@@ -1527,6 +1704,70 @@ order by month, surface;`,
       }, 1800);
     }
 
+    function setWorkflowStep(stepName) {
+      document.querySelectorAll(".step").forEach((item) => {
+        item.setAttribute("aria-selected", String(item.dataset.step === stepName));
+      });
+    }
+
+    function setProgressStage(stageIndex, active) {
+      const stage = runStages[stageIndex] || runStages[0];
+      const complete = !active && stageIndex >= runStages.length - 1;
+      queryBox.dataset.runState = active ? "running" : complete ? "complete" : "idle";
+      queryStatus.dataset.state = active ? "running" : complete ? "complete" : "ready";
+      queryStatusText.textContent = active ? "Analysis running" : complete ? "Brief ready" : "Analysis ready";
+      runProgress.dataset.active = String(active);
+      runProgressTitle.textContent = stage[1];
+      runProgressDetail.textContent = stage[2];
+      runProgressPercent.textContent = `${stage[3]}%`;
+      runProgressBar.style.width = `${stage[3]}%`;
+      setWorkflowStep(stage[0]);
+      progressStepElements.forEach((item, index) => {
+        item.dataset.state = complete && index <= stageIndex ? "done" : index < stageIndex ? "done" : index === stageIndex ? "active" : "pending";
+      });
+    }
+
+    function resetProgress() {
+      window.clearTimeout(runTimer);
+      queryBox.dataset.runState = "idle";
+      queryStatus.dataset.state = "ready";
+      queryStatusText.textContent = "Analysis ready";
+      runProgress.dataset.active = "false";
+      runProgressTitle.textContent = "Ready to analyze sample data";
+      runProgressDetail.textContent = "Choose a question, then run a local read-only query plan.";
+      runProgressPercent.textContent = "0%";
+      runProgressBar.style.width = "0%";
+      progressStepElements.forEach((item) => {
+        item.dataset.state = "pending";
+      });
+    }
+
+    function runAnalysis() {
+      window.clearTimeout(runTimer);
+      askButton.disabled = true;
+      runSampleButton.disabled = true;
+      let stageIndex = 0;
+      setProgressStage(stageIndex, true);
+      showToast("Started local read-only analysis");
+
+      const advance = () => {
+        stageIndex += 1;
+        const running = stageIndex < runStages.length - 1;
+        setProgressStage(stageIndex, running);
+
+        if (stageIndex < runStages.length - 1) {
+          runTimer = window.setTimeout(advance, 680);
+          return;
+        }
+
+        askButton.disabled = false;
+        runSampleButton.disabled = false;
+        showToast("Analysis complete - query provenance recorded");
+      };
+
+      runTimer = window.setTimeout(advance, 680);
+    }
+
     function selectScenario(id, announce = true) {
       activeScenario = sampleScenarios.find((scenario) => scenario.id === id) || sampleScenarios[0];
       questionInput.value = activeScenario.question;
@@ -1536,8 +1777,37 @@ order by month, surface;`,
       renderBrief();
       renderBars();
       renderTrust(activeTrustTab);
+      resetProgress();
       if (announce) {
         showToast("Sample question loaded from the demo datamart");
+      }
+    }
+
+    function bindImmediateAction(element, action) {
+      let lastStartedAt = 0;
+      const start = () => {
+        const now = Date.now();
+        if (now - lastStartedAt < 350) {
+          return;
+        }
+        lastStartedAt = now;
+        action();
+      };
+      element.addEventListener("pointerdown", start);
+      element.addEventListener("click", start);
+    }
+
+    function handleSampleQuestion(event) {
+      const button = event.target.closest(".sample-question");
+      if (button) {
+        const now = Date.now();
+        if (button.dataset.scenario === handleSampleQuestion.lastId && now - handleSampleQuestion.lastAt < 350) {
+          return;
+        }
+        handleSampleQuestion.lastId = button.dataset.scenario;
+        handleSampleQuestion.lastAt = now;
+        selectScenario(button.dataset.scenario);
+        runAnalysis();
       }
     }
 
@@ -1558,24 +1828,19 @@ order by month, surface;`,
       });
     });
 
-    sampleQuestions.addEventListener("click", (event) => {
-      const button = event.target.closest(".sample-question");
-      if (button) {
-        selectScenario(button.dataset.scenario);
-      }
+    sampleQuestions.addEventListener("pointerdown", handleSampleQuestion);
+    sampleQuestions.addEventListener("click", handleSampleQuestion);
+
+    bindImmediateAction(runSampleButton, () => {
+      runAnalysis();
     });
 
-    document.getElementById("runSample").addEventListener("click", () => {
-      showToast(`Running sample: ${activeScenario.question}`);
-      window.setTimeout(() => showToast("Analysis complete - query provenance recorded"), 850);
-    });
-
-    document.getElementById("askButton").addEventListener("click", () => {
+    bindImmediateAction(askButton, () => {
       const matchingScenario = sampleScenarios.find((scenario) => scenario.question === questionInput.value.trim());
       if (matchingScenario) {
         selectScenario(matchingScenario.id, false);
       }
-      showToast("Question analyzed with documented context");
+      runAnalysis();
     });
 
     document.getElementById("viewBrief").addEventListener("click", () => {
