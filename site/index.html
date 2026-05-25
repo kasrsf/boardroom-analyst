@@ -32,6 +32,7 @@
       background:
         linear-gradient(135deg, #ffffff 0%, var(--paper) 46%, #ffe9ee 100%);
       letter-spacing: 0;
+      overflow-x: hidden;
     }
 
     h1,
@@ -41,12 +42,14 @@
     span,
     strong,
     input,
+    textarea,
     button {
       overflow-wrap: break-word;
     }
 
     button,
-    input {
+    input,
+    textarea {
       font: inherit;
     }
 
@@ -374,20 +377,23 @@
       align-items: center;
     }
 
-    .composer input {
+    .composer input,
+    .composer textarea {
       width: 100%;
       min-height: 48px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 0 14px;
+      padding: 13px 14px;
       color: var(--ink);
       background: #ffffff;
       font-size: 15px;
       font-weight: 680;
       outline: none;
+      resize: vertical;
     }
 
-    .composer input:focus {
+    .composer input:focus,
+    .composer textarea:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 4px rgba(230, 0, 35, 0.1);
     }
@@ -1117,6 +1123,286 @@
         width: 100%;
       }
     }
+
+    .app {
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .topbar {
+      position: static;
+      min-height: 64px;
+    }
+
+    .topbar .environment {
+      margin-left: auto;
+    }
+
+    .workspace {
+      width: min(1120px, calc(100% - 40px));
+      grid-template-columns: 1fr;
+      padding: 28px 0 30px;
+    }
+
+    .landing-main {
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .executive-stage {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+      gap: 18px;
+      align-items: stretch;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .landing-copy {
+      max-width: 720px;
+      margin-bottom: 4px;
+      min-width: 0;
+    }
+
+    .landing-copy h1 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .landing-copy p {
+      max-width: 620px;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.5;
+      font-weight: 620;
+    }
+
+    .landing-main .query-box,
+    .answer-card {
+      min-height: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .landing-main .query-box {
+      box-shadow: 0 20px 60px rgba(230, 0, 35, 0.1);
+    }
+
+    .composer {
+      grid-template-columns: 1fr;
+    }
+
+    .composer-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sample-picker,
+    .run-progress,
+    .brief-body {
+      box-shadow: none;
+    }
+
+    .answer-card {
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .answer-card .brief-body {
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+
+    .answer-card .appendix {
+      margin-top: 0;
+    }
+
+    .scope-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .details-section,
+    .sales-section {
+      scroll-margin-top: 18px;
+    }
+
+    .details-section {
+      display: grid;
+      gap: 18px;
+      padding-top: 4px;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
+      gap: 18px;
+    }
+
+    .details-grid .rail {
+      position: static;
+      border-radius: 8px;
+    }
+
+    .workflow-panel .steps {
+      padding: 0;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .workflow-panel .step {
+      grid-template-columns: 1fr;
+      align-content: start;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .workflow-panel .step-num {
+      margin-bottom: 2px;
+    }
+
+    .sales-section {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      background: #111111;
+      color: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .sales-section .section-title p,
+    .sales-section p {
+      color: #f6c8d0;
+    }
+
+    .sales-points {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .sales-point {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 8px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .sales-point strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .sales-point span {
+      display: block;
+      margin-top: 8px;
+      color: #f6c8d0;
+      font-size: 12px;
+      line-height: 1.42;
+      font-weight: 680;
+    }
+
+    .site-footer {
+      min-height: 48px;
+      border-top: 1px solid var(--line);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      color: var(--accent-dark);
+      text-decoration: none;
+      font-weight: 850;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 980px) {
+      .executive-stage,
+      .details-grid,
+      .analysis-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .workflow-panel .steps,
+      .sales-points {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        padding: 14px;
+      }
+
+      .topbar .environment {
+        margin-left: 0;
+      }
+
+      .workspace {
+        width: calc(100% - 28px);
+        max-width: calc(100% - 28px);
+        padding-top: 18px;
+      }
+
+      .landing-copy h1 {
+        font-size: 28px;
+        line-height: 1.04;
+      }
+
+      .landing-copy p {
+        font-size: 14px;
+      }
+
+      .composer-actions,
+      .site-footer,
+      .footer-links {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .workflow-panel .steps,
+      .sales-points,
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .query-box,
+      .answer-card,
+      .panel,
+      .sales-section {
+        padding: 16px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1126,106 +1412,122 @@
         <div class="mark">B</div>
         <div>
           <strong>Boardroom Analyst</strong>
-          <span>MVP instance</span>
+          <span>Executive workspace</span>
         </div>
       </div>
       <div class="environment">
         <span class="status-dot" aria-hidden="true"></span>
         <span>Local DuckDB connected</span>
       </div>
-      <div class="top-actions">
-        <button class="btn primary" id="runSample" type="button" aria-label="Run sample question">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M8 5v14l11-7-11-7Z"/></svg>
-          Run sample question
-        </button>
-        <button class="btn" id="viewBrief" type="button" aria-label="View generated brief">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
-          View brief
-        </button>
-      </div>
     </header>
 
     <div class="workspace">
-      <aside class="sidebar">
-        <div class="side-head">
-          <h1>Governed executive answers.</h1>
-          <p>This MVP turns a local datamart into a traceable brief and follow-up loop.</p>
-        </div>
-        <nav class="steps" aria-label="Product workflow">
-          <button class="step" type="button" aria-selected="true" data-step="onboard">
-            <span class="step-num">1</span>
-            <span><strong>Onboard</strong><span>Validate DuckDB + dbt artifacts</span></span>
-          </button>
-          <button class="step" type="button" aria-selected="false" data-step="ask">
-            <span class="step-num">2</span>
-            <span><strong>Ask</strong><span>Capture the leadership question</span></span>
-          </button>
-          <button class="step" type="button" aria-selected="false" data-step="analyze">
-            <span class="step-num">3</span>
-            <span><strong>Analyze</strong><span>Run read-only SQL with hashes</span></span>
-          </button>
-          <button class="step" type="button" aria-selected="false" data-step="brief">
-            <span class="step-num">4</span>
-            <span><strong>Brief</strong><span>Write claims with provenance</span></span>
-          </button>
-          <button class="step" type="button" aria-selected="false" data-step="followup">
-            <span class="step-num">5</span>
-            <span><strong>Follow-up</strong><span>Reuse the governed context</span></span>
-          </button>
-        </nav>
-        <div class="side-foot">
-          Synthetic demo data. Local-only analysis with no database writeback.
-        </div>
-      </aside>
+      <main class="main landing-main">
+        <section class="landing-copy" aria-labelledby="landingTitle">
+          <h1 id="landingTitle">Ask the boardroom question. Get the governed answer.</h1>
+          <p>Use the sample datamart like an executive would: ask a revenue or engagement question, watch the analysis run, then review the memo, caveats, and source queries.</p>
+        </section>
 
-      <main class="main">
-        <section class="query-box" id="queryBox" data-run-state="idle" aria-labelledby="questionTitle">
-          <div class="query-title">
-            <div>
-              <h2 id="questionTitle">Ask a boardroom-level question</h2>
-              <p>The MVP answers only when metric definitions, grain, and source SQL are reviewable.</p>
-            </div>
-            <div class="query-status" id="queryStatus" data-state="ready">
-              <span class="status-dot" aria-hidden="true"></span>
-              <span id="queryStatusText">Analysis ready</span>
-            </div>
-          </div>
-          <div class="composer">
-            <input id="questionInput" value="Why did ad revenue growth slow in March?" aria-label="Executive question">
-            <button class="btn primary" id="askButton" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4 20-7Z"/></svg>
-              Analyze
-            </button>
-          </div>
-          <div class="run-progress" id="runProgress" data-active="false" aria-live="polite">
-            <div class="run-progress-head">
+        <section class="executive-stage" aria-label="Interactive executive analysis demo">
+          <section class="query-box" id="queryBox" data-run-state="idle" aria-labelledby="questionTitle">
+            <div class="query-title">
               <div>
-                <strong id="runProgressTitle">Ready to analyze sample data</strong>
-                <span id="runProgressDetail">Choose a question, then run a local read-only query plan.</span>
+                <h2 id="questionTitle">What should we inspect?</h2>
+                <p>Answers are generated only when metric definitions, grain, and source SQL are reviewable.</p>
               </div>
-              <div class="run-percent" id="runProgressPercent">0%</div>
+              <div class="query-status" id="queryStatus" data-state="ready">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span id="queryStatusText">Analysis ready</span>
+              </div>
             </div>
-            <div class="progress-track" aria-hidden="true">
-              <div class="progress-bar" id="runProgressBar"></div>
+            <div class="composer">
+              <textarea id="questionInput" rows="2" aria-label="Executive question">Why did ad revenue growth slow in March?</textarea>
+              <div class="composer-actions">
+                <button class="btn primary" id="askButton" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4 20-7Z"/></svg>
+                  Analyze
+                </button>
+                <button class="btn" id="runSample" type="button" aria-label="Run default sample question">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M8 5v14l11-7-11-7Z"/></svg>
+                  Run sample
+                </button>
+              </div>
             </div>
-            <div class="progress-steps" id="progressSteps">
-              <div class="progress-step" data-stage-index="0" data-state="pending">Map question</div>
-              <div class="progress-step" data-stage-index="1" data-state="pending">Validate SQL</div>
-              <div class="progress-step" data-stage-index="2" data-state="pending">Run DuckDB</div>
-              <div class="progress-step" data-stage-index="3" data-state="pending">Hash results</div>
-              <div class="progress-step" data-stage-index="4" data-state="pending">Draft brief</div>
+            <div class="sample-picker" aria-label="Sample-data questions">
+              <div class="sample-label">Ask from sample data</div>
+              <div class="sample-buttons" id="sampleQuestions"></div>
             </div>
-          </div>
-          <div class="sample-picker" aria-label="Sample-data questions">
-            <div class="sample-label">Ask from sample data</div>
-            <div class="sample-buttons" id="sampleQuestions"></div>
-          </div>
-          <div class="filters" aria-label="Active analysis scope">
-            <span class="filter">Dataset <b>visual_discovery_boardroom_mart</b></span>
-            <span class="filter">Grain <b>month x surface</b></span>
-            <span class="filter">Window <b>Jan-Mar</b></span>
-            <span class="filter">Mode <b>read-only SQL</b></span>
-          </div>
+            <div class="run-progress" id="runProgress" data-active="false" aria-live="polite">
+              <div class="run-progress-head">
+                <div>
+                  <strong id="runProgressTitle">Ready to analyze sample data</strong>
+                  <span id="runProgressDetail">Choose a question, then run a local read-only query plan.</span>
+                </div>
+                <div class="run-percent" id="runProgressPercent">0%</div>
+              </div>
+              <div class="progress-track" aria-hidden="true">
+                <div class="progress-bar" id="runProgressBar"></div>
+              </div>
+              <div class="progress-steps" id="progressSteps">
+                <div class="progress-step" data-stage-index="0" data-state="pending">Map question</div>
+                <div class="progress-step" data-stage-index="1" data-state="pending">Validate SQL</div>
+                <div class="progress-step" data-stage-index="2" data-state="pending">Run DuckDB</div>
+                <div class="progress-step" data-stage-index="3" data-state="pending">Hash results</div>
+                <div class="progress-step" data-stage-index="4" data-state="pending">Draft brief</div>
+              </div>
+            </div>
+            <div class="scope-row" aria-label="Active analysis scope">
+              <span class="filter">Window <b>Jan-Mar</b></span>
+              <span class="filter">Grain <b>month x surface</b></span>
+              <span class="filter">Mode <b>read-only SQL</b></span>
+            </div>
+          </section>
+
+          <section class="answer-card brief" id="briefPanel" aria-labelledby="briefTitle">
+            <div class="section-title">
+              <div>
+                <h2 id="briefTitle">Executive answer</h2>
+                <p>The generated memo stays inside documented context and cites the source query IDs.</p>
+              </div>
+              <button class="btn" id="viewBrief" type="button" aria-label="View generated brief">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
+                Review
+              </button>
+            </div>
+            <div class="brief-body" id="briefBody">
+              <h3>Answer</h3>
+              <p>March revenue growth slowed because brand video declined while shopping and visual search continued to grow. Total ad revenue still rose from $925M to $973M, but the monthly lift stepped down from +$69M to +$48M.</p>
+              <h3>Decision lens</h3>
+              <p>Ask the monetization team to separate brand video demand softness from campaign delivery or pricing effects. The documented mart supports month x surface analysis; it does not yet support advertiser cohort causality.</p>
+              <h3>Caveats</h3>
+              <p>All numbers come from synthetic MVP data. Claims are restricted to documented model grain and source query IDs q001 and q002.</p>
+            </div>
+            <button class="btn" id="copyBrief" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy brief
+            </button>
+            <div class="appendix" id="sqlAppendix" data-open="false">
+              <button type="button" id="toggleSql">
+                SQL appendix
+                <span>q001 + q002</span>
+              </button>
+              <pre id="sqlText">q001_surface_revenue
+select month, surface, net_revenue_millions
+from ad_revenue_by_surface
+order by month, surface;
+
+q002_revenue_growth_waterfall
+with totals as (
+  select month, sum(net_revenue_millions) as total_revenue_millions
+  from ad_revenue_by_surface
+  group by 1
+)
+select month, total_revenue_millions,
+       total_revenue_millions - lag(total_revenue_millions) over (order by month) as revenue_change_millions
+from totals
+order by month;</pre>
+            </div>
+          </section>
         </section>
 
         <section class="metrics" id="metricsGrid" aria-label="Analysis summary metrics">
@@ -1247,7 +1549,15 @@
           </div>
         </section>
 
-        <section class="analysis-grid">
+        <section class="details-section" id="details" aria-labelledby="detailsTitle">
+          <div class="section-title">
+            <div>
+              <h2 id="detailsTitle">More details</h2>
+              <p>The first screen is the executive experience. This section shows the evidence, workflow, and guardrails behind it.</p>
+            </div>
+          </div>
+
+          <section class="analysis-grid">
           <div class="panel">
             <div class="section-title">
               <div>
@@ -1319,82 +1629,105 @@
           </div>
         </section>
 
-        <section class="brief" id="briefPanel" aria-labelledby="briefTitle">
+          <section class="details-grid">
+            <div class="panel workflow-panel">
+              <div class="section-title">
+                <div>
+                  <h2>How the run works</h2>
+                  <p>The agent narrows the question to documented metrics before producing the memo.</p>
+                </div>
+              </div>
+              <nav class="steps" aria-label="Product workflow">
+                <button class="step" type="button" aria-selected="true" data-step="onboard">
+                  <span class="step-num">1</span>
+                  <span><strong>Onboard</strong><span>Validate DuckDB + dbt artifacts</span></span>
+                </button>
+                <button class="step" type="button" aria-selected="false" data-step="ask">
+                  <span class="step-num">2</span>
+                  <span><strong>Ask</strong><span>Capture the leadership question</span></span>
+                </button>
+                <button class="step" type="button" aria-selected="false" data-step="analyze">
+                  <span class="step-num">3</span>
+                  <span><strong>Analyze</strong><span>Run read-only SQL with hashes</span></span>
+                </button>
+                <button class="step" type="button" aria-selected="false" data-step="brief">
+                  <span class="step-num">4</span>
+                  <span><strong>Brief</strong><span>Write claims with provenance</span></span>
+                </button>
+                <button class="step" type="button" aria-selected="false" data-step="followup">
+                  <span class="step-num">5</span>
+                  <span><strong>Follow-up</strong><span>Reuse the governed context</span></span>
+                </button>
+              </nav>
+            </div>
+
+            <aside class="rail" aria-label="Trust and provenance">
+              <section class="rail-section">
+                <h2>Trust console</h2>
+                <p>The MVP records exactly what it used before writing the brief.</p>
+                <div class="tabs" role="tablist" aria-label="Trust console tabs">
+                  <button class="tab" type="button" aria-selected="true" data-tab="queries">SQL</button>
+                  <button class="tab" type="button" aria-selected="false" data-tab="metrics">Metrics</button>
+                  <button class="tab" type="button" aria-selected="false" data-tab="models">Models</button>
+                  <button class="tab" type="button" aria-selected="false" data-tab="caveats">Caveats</button>
+                </div>
+                <div class="trust-list" id="trustList"></div>
+              </section>
+              <section class="rail-section">
+                <h2>Run health</h2>
+                <div class="health">
+                  <div class="health-row"><span>SQL mode</span><strong class="ok">Read-only</strong></div>
+                  <div class="health-row"><span>Mutating statements</span><strong class="ok">Rejected</strong></div>
+                  <div class="health-row"><span>Manifest</span><strong class="ok">Loaded</strong></div>
+                  <div class="health-row"><span>Join coverage</span><strong class="warn">Limited</strong></div>
+                  <div class="health-row"><span>Result hashes</span><strong class="ok">Recorded</strong></div>
+                </div>
+              </section>
+              <section class="rail-section">
+                <h2>Follow-up analyst</h2>
+                <p>Ask a narrower question without losing provenance.</p>
+                <div class="followup">
+                  <input id="followupInput" value="Which surface should I inspect first?" aria-label="Follow-up question">
+                  <button class="btn primary" id="followupButton" type="button">Ask</button>
+                </div>
+                <div class="answer" id="followupAnswer">Brand video should be inspected first because it declined by $14M while the commercial-intent surfaces grew.</div>
+              </section>
+            </aside>
+          </section>
+        </section>
+
+        <section class="sales-section" id="sales-pitch" aria-labelledby="salesTitle">
           <div class="section-title">
             <div>
-              <h2 id="briefTitle">Generated executive brief</h2>
-              <p>This is the artifact the MVP would hand to an operator for review.</p>
+              <h2 id="salesTitle">Sales pitch</h2>
+              <p>Package the governed-agent workflow as an internal operator tool: installable skills, local data execution, and board-ready output.</p>
             </div>
-            <button class="btn" id="copyBrief" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              Copy brief
-            </button>
           </div>
-            <div class="brief-body" id="briefBody">
-            <h3>Answer</h3>
-            <p>March revenue growth slowed because brand video declined while shopping and visual search continued to grow. Total ad revenue still rose from $925M to $973M, but the monthly lift stepped down from +$69M to +$48M.</p>
-            <h3>Decision lens</h3>
-            <p>Ask the monetization team to separate brand video demand softness from campaign delivery or pricing effects. The documented mart supports month x surface analysis; it does not yet support advertiser cohort causality.</p>
-            <h3>Caveats</h3>
-            <p>All numbers come from synthetic MVP data. Claims are restricted to documented model grain and source query IDs q001 and q002.</p>
-          </div>
-          <div class="appendix" id="sqlAppendix" data-open="false">
-            <button type="button" id="toggleSql">
-              SQL appendix
-              <span>q001 + q002</span>
-            </button>
-            <pre id="sqlText">q001_surface_revenue
-select month, surface, net_revenue_millions
-from ad_revenue_by_surface
-order by month, surface;
-
-q002_revenue_growth_waterfall
-with totals as (
-  select month, sum(net_revenue_millions) as total_revenue_millions
-  from ad_revenue_by_surface
-  group by 1
-)
-select month, total_revenue_millions,
-       total_revenue_millions - lag(total_revenue_millions) over (order by month) as revenue_change_millions
-from totals
-order by month;</pre>
+          <div class="sales-points">
+            <div class="sales-point">
+              <strong>Trust-first answers</strong>
+              <span>Every numeric claim maps to SQL, result hashes, metric docs, and caveats.</span>
+            </div>
+            <div class="sales-point">
+              <strong>Fits local workflows</strong>
+              <span>Runs against local DuckDB and dbt artifacts without sending data to external services.</span>
+            </div>
+            <div class="sales-point">
+              <strong>Marketplace-ready shape</strong>
+              <span>Ships as focused skills with plugin manifests for agent installation and internal distribution.</span>
+            </div>
           </div>
         </section>
       </main>
-
-      <aside class="rail" aria-label="Trust and provenance">
-        <section class="rail-section">
-          <h2>Trust console</h2>
-          <p>The MVP records exactly what it used before writing the brief.</p>
-          <div class="tabs" role="tablist" aria-label="Trust console tabs">
-            <button class="tab" type="button" aria-selected="true" data-tab="queries">SQL</button>
-            <button class="tab" type="button" aria-selected="false" data-tab="metrics">Metrics</button>
-            <button class="tab" type="button" aria-selected="false" data-tab="models">Models</button>
-            <button class="tab" type="button" aria-selected="false" data-tab="caveats">Caveats</button>
-          </div>
-          <div class="trust-list" id="trustList"></div>
-        </section>
-        <section class="rail-section">
-          <h2>Run health</h2>
-          <div class="health">
-            <div class="health-row"><span>SQL mode</span><strong class="ok">Read-only</strong></div>
-            <div class="health-row"><span>Mutating statements</span><strong class="ok">Rejected</strong></div>
-            <div class="health-row"><span>Manifest</span><strong class="ok">Loaded</strong></div>
-            <div class="health-row"><span>Join coverage</span><strong class="warn">Limited</strong></div>
-            <div class="health-row"><span>Result hashes</span><strong class="ok">Recorded</strong></div>
-          </div>
-        </section>
-        <section class="rail-section">
-          <h2>Follow-up analyst</h2>
-          <p>Ask a narrower question without losing provenance.</p>
-          <div class="followup">
-            <input id="followupInput" value="Which surface should I inspect first?" aria-label="Follow-up question">
-            <button class="btn primary" id="followupButton" type="button">Ask</button>
-          </div>
-          <div class="answer" id="followupAnswer">Brand video should be inspected first because it declined by $14M while the commercial-intent surfaces grew.</div>
-        </section>
-      </aside>
     </div>
+
+    <footer class="site-footer">
+      <span>Synthetic demo data. Local-only analysis with no database writeback.</span>
+      <nav class="footer-links" aria-label="Product information">
+        <a href="#details">More details</a>
+        <a href="#sales-pitch">Sales pitch</a>
+      </nav>
+    </footer>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite">
@@ -1844,8 +2177,9 @@ order by month, surface;`,
     });
 
     document.getElementById("viewBrief").addEventListener("click", () => {
+      document.getElementById("sqlAppendix").dataset.open = "true";
       document.getElementById("briefPanel").scrollIntoView({ behavior: "smooth", block: "start" });
-      showToast("Generated brief opened");
+      showToast("SQL appendix opened");
     });
 
     document.getElementById("copyBrief").addEventListener("click", async () => {
