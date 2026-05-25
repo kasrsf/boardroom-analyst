@@ -13,13 +13,13 @@ forcing every claim to show its work.**
 
 ## Demo
 
-[Hosted showcase: presentation + live demo](https://boardroom-analyst.kasrsf.com/)
+[Hosted MVP product demo](https://boardroom-analyst.kasrsf.com/)
 
 [![Boardroom Analyst demo recording](demo/output/boardroom-analyst-demo.gif)](demo/output/boardroom-analyst-demo.mp4)
 
 The animated preview is optimized for GitHub README rendering. Open the
 [source MP4 recording](demo/output/boardroom-analyst-demo.mp4) for the full
-end-to-end pitch flow: a leadership question, dbt semantic context, read-only
+end-to-end MVP product flow: a leadership question, dbt semantic context, read-only
 SQL, evidence, an executive brief, and a governed follow-up answer.
 
 ## Why It Exists
@@ -170,24 +170,24 @@ The intended loop is:
 5. Generate chart CSVs and a brief.
 6. Ask follow-up questions and reuse the same provenance trail.
 
-## Demo And Pitch Materials
+## Demo And Supporting Materials
 
-This repo includes a manager-ready pitch package:
+This repo includes a manager-ready product evaluation package:
 
-- `marketing/slides/boardroom-analyst-internal-pitch.pptx`: editable presentation deck for the internal funding pitch.
+- `marketing/slides/boardroom-analyst-internal-pitch.pptx`: editable slide deck for internal discussion.
 - `marketing/one-pager.md`: concise product one-pager.
 - `marketing/executive-pitch-brief.md`: executive funding angle.
 - `marketing/demo-script.md`: narration for a live or recorded demo.
 - `marketing/faq.md`: likely manager questions and crisp answers.
-- `site/index.html`: hosted showcase page with deck, demo, and recording links.
+- `site/index.html`: hosted MVP product demo for the governed analytics workflow.
 - `demo/build_demo.py`: builds a complete synthetic demo.
 - `demo/showcase/index.html`: browser showcase used for the recording.
 - `demo/output/boardroom-analyst-demo.mp4`: short demo recording artifact.
 
 The included demo uses synthetic visual-discovery marketplace data and is framed
-for an executive funding pitch: AI-powered shopping, visual search, commercial
-intent, engaged users, and performance advertising surfaces. It is explicitly
-not reported company financial data.
+for an executive product evaluation: AI-powered shopping, visual search,
+commercial intent, engaged users, and performance advertising surfaces. It is
+explicitly not reported company financial data.
 
 Rebuild the demo:
 
@@ -238,4 +238,4 @@ Useful test commands:
 
 Generated runtime artifacts such as `reports/`, `datamart_context.json`, and
 `analysis_run.json` are ignored by git. Demo outputs under `demo/output` are
-kept intentionally because they support the pitch package.
+kept intentionally because they support the product demo package.
