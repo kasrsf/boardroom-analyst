@@ -1217,6 +1217,15 @@
       align-content: start;
     }
 
+    .answer-card[data-answer-state="running"] {
+      border-color: #f0aab6;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), #fff5f7);
+    }
+
+    .answer-card[data-answer-state="complete"] {
+      border-color: rgba(15, 138, 75, 0.35);
+    }
+
     .answer-card .brief-body {
       padding: 0;
       border: 0;
@@ -1225,6 +1234,37 @@
 
     .answer-card .appendix {
       margin-top: 0;
+    }
+
+    .answer-placeholder {
+      min-height: 190px;
+      border: 1px dashed #efb8c2;
+      border-radius: 8px;
+      padding: 16px;
+      display: grid;
+      align-content: center;
+      gap: 10px;
+      color: var(--muted);
+      background: #fff7f8;
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 720;
+    }
+
+    .answer-placeholder strong {
+      display: block;
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .generated-section {
+      animation: answerReveal 260ms ease both;
+    }
+
+    @keyframes answerReveal {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .scope-row {
@@ -1483,49 +1523,33 @@
             </div>
           </section>
 
-          <section class="answer-card brief" id="briefPanel" aria-labelledby="briefTitle">
+          <section class="answer-card brief" id="briefPanel" data-answer-state="pending" aria-labelledby="briefTitle">
             <div class="section-title">
               <div>
                 <h2 id="briefTitle">Executive answer</h2>
-                <p>The generated memo stays inside documented context and cites the source query IDs.</p>
+                <p>The memo appears in stages as the run validates context, executes SQL, and records caveats.</p>
               </div>
-              <button class="btn" id="viewBrief" type="button" aria-label="View generated brief">
+              <button class="btn" id="viewBrief" type="button" aria-label="View generated brief" disabled>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
                 Review
               </button>
             </div>
             <div class="brief-body" id="briefBody">
-              <h3>Answer</h3>
-              <p>March revenue growth slowed because brand video declined while shopping and visual search continued to grow. Total ad revenue still rose from $925M to $973M, but the monthly lift stepped down from +$69M to +$48M.</p>
-              <h3>Decision lens</h3>
-              <p>Ask the monetization team to separate brand video demand softness from campaign delivery or pricing effects. The documented mart supports month x surface analysis; it does not yet support advertiser cohort causality.</p>
-              <h3>Caveats</h3>
-              <p>All numbers come from synthetic MVP data. Claims are restricted to documented model grain and source query IDs q001 and q002.</p>
+              <div class="answer-placeholder">
+                <strong>Waiting for analysis</strong>
+                Choose a sample question or click Analyze. The answer, decision lens, caveats, and SQL appendix will appear as the local query run advances.
+              </div>
             </div>
-            <button class="btn" id="copyBrief" type="button">
+            <button class="btn" id="copyBrief" type="button" disabled>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               Copy brief
             </button>
             <div class="appendix" id="sqlAppendix" data-open="false">
-              <button type="button" id="toggleSql">
+              <button type="button" id="toggleSql" disabled>
                 SQL appendix
                 <span>q001 + q002</span>
               </button>
-              <pre id="sqlText">q001_surface_revenue
-select month, surface, net_revenue_millions
-from ad_revenue_by_surface
-order by month, surface;
-
-q002_revenue_growth_waterfall
-with totals as (
-  select month, sum(net_revenue_millions) as total_revenue_millions
-  from ad_revenue_by_surface
-  group by 1
-)
-select month, total_revenue_millions,
-       total_revenue_millions - lag(total_revenue_millions) over (order by month) as revenue_change_millions
-from totals
-order by month;</pre>
+              <pre id="sqlText">SQL appendix will appear after read-only queries finish.</pre>
             </div>
           </section>
         </section>
@@ -1940,8 +1964,13 @@ order by month, surface;`,
     const metricsGrid = document.getElementById("metricsGrid");
     const findingsList = document.getElementById("findingsList");
     const sourceQueryCount = document.getElementById("sourceQueryCount");
+    const answerCard = document.getElementById("briefPanel");
     const briefBody = document.getElementById("briefBody");
     const sqlText = document.getElementById("sqlText");
+    const sqlAppendix = document.getElementById("sqlAppendix");
+    const toggleSqlButton = document.getElementById("toggleSql");
+    const copyBriefButton = document.getElementById("copyBrief");
+    const viewBriefButton = document.getElementById("viewBrief");
     const followupAnswer = document.getElementById("followupAnswer");
     const queryBox = document.getElementById("queryBox");
     const queryStatus = document.getElementById("queryStatus");
@@ -2011,12 +2040,69 @@ order by month, surface;`,
       `).join("");
     }
 
-    function renderBrief() {
-      briefBody.innerHTML = activeScenario.brief.map(([heading, body]) => `
-        <h3>${heading}</h3>
-        <p>${body}</p>
-      `).join("");
-      sqlText.textContent = activeScenario.sql;
+    function setAnswerControls(enabled) {
+      copyBriefButton.disabled = !enabled;
+      viewBriefButton.disabled = !enabled;
+      toggleSqlButton.disabled = !enabled;
+    }
+
+    function renderAnswerPlaceholder(title = "Waiting for analysis", body = "Choose a sample question or click Analyze. The answer, decision lens, caveats, and SQL appendix will appear as the local query run advances.", state = "pending") {
+      answerCard.dataset.answerState = state;
+      briefBody.innerHTML = `
+        <div class="answer-placeholder">
+          <strong>${title}</strong>
+          ${body}
+        </div>
+      `;
+      sqlAppendix.dataset.open = "false";
+      sqlText.textContent = "SQL appendix will appear after read-only queries finish.";
+      setAnswerControls(false);
+    }
+
+    function renderBriefProgress(stageIndex, complete = false) {
+      let sectionCount = 0;
+      if (stageIndex >= 2) {
+        sectionCount = 1;
+      }
+      if (stageIndex >= 3) {
+        sectionCount = 2;
+      }
+      if (complete || stageIndex >= runStages.length - 1) {
+        sectionCount = activeScenario.brief.length;
+      }
+
+      if (sectionCount === 0) {
+        const placeholderCopy = stageIndex === 0
+          ? ["Mapping question", "Matching the prompt to documented metrics before any claim is shown."]
+          : ["Validating query plan", "Checking read-only SQL, supported grain, and caveats before drafting the answer."];
+        renderAnswerPlaceholder(placeholderCopy[0], placeholderCopy[1], "running");
+        return;
+      }
+
+      answerCard.dataset.answerState = complete ? "complete" : "running";
+      briefBody.innerHTML = [
+        ...activeScenario.brief.slice(0, sectionCount).map(([heading, body]) => `
+          <div class="generated-section">
+            <h3>${heading}</h3>
+            <p>${body}</p>
+          </div>
+        `),
+        sectionCount < activeScenario.brief.length ? `
+          <div class="answer-placeholder">
+            <strong>Drafting remaining sections</strong>
+            The next stage will add the decision lens, caveats, and query appendix after result checks finish.
+          </div>
+        ` : ""
+      ].join("");
+
+      if (complete) {
+        sqlText.textContent = activeScenario.sql;
+        setAnswerControls(true);
+      } else {
+        sqlAppendix.dataset.open = "false";
+        sqlText.textContent = "SQL appendix will appear after read-only queries finish.";
+        setAnswerControls(false);
+      }
       followupAnswer.textContent = activeScenario.followup;
     }
 
@@ -2058,6 +2144,7 @@ order by month, surface;`,
       progressStepElements.forEach((item, index) => {
         item.dataset.state = complete && index <= stageIndex ? "done" : index < stageIndex ? "done" : index === stageIndex ? "active" : "pending";
       });
+      renderBriefProgress(stageIndex, complete);
     }
 
     function resetProgress() {
@@ -2073,6 +2160,7 @@ order by month, surface;`,
       progressStepElements.forEach((item) => {
         item.dataset.state = "pending";
       });
+      renderAnswerPlaceholder();
     }
 
     function runAnalysis() {
@@ -2107,7 +2195,7 @@ order by month, surface;`,
       renderSampleQuestions();
       renderMetrics();
       renderFindings();
-      renderBrief();
+      renderAnswerPlaceholder();
       renderBars();
       renderTrust(activeTrustTab);
       resetProgress();
@@ -2177,12 +2265,12 @@ order by month, surface;`,
     });
 
     document.getElementById("viewBrief").addEventListener("click", () => {
-      document.getElementById("sqlAppendix").dataset.open = "true";
+      sqlAppendix.dataset.open = "true";
       document.getElementById("briefPanel").scrollIntoView({ behavior: "smooth", block: "start" });
       showToast("SQL appendix opened");
     });
 
-    document.getElementById("copyBrief").addEventListener("click", async () => {
+    copyBriefButton.addEventListener("click", async () => {
       const text = briefBody.innerText;
       try {
         await navigator.clipboard.writeText(text);
@@ -2192,9 +2280,8 @@ order by month, surface;`,
       }
     });
 
-    document.getElementById("toggleSql").addEventListener("click", () => {
-      const appendix = document.getElementById("sqlAppendix");
-      appendix.dataset.open = appendix.dataset.open === "true" ? "false" : "true";
+    toggleSqlButton.addEventListener("click", () => {
+      sqlAppendix.dataset.open = sqlAppendix.dataset.open === "true" ? "false" : "true";
     });
 
     document.getElementById("followupButton").addEventListener("click", () => {
