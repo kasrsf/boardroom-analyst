@@ -366,6 +366,49 @@
       gap: 8px;
     }
 
+    .sample-picker {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: #ffffff;
+      display: grid;
+      gap: 10px;
+    }
+
+    .sample-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 820;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .sample-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .sample-question {
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px 10px;
+      background: #fff9fa;
+      color: var(--ink);
+      text-align: left;
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 780;
+    }
+
+    .sample-question[aria-pressed="true"] {
+      border-color: var(--accent);
+      background: #fff0f2;
+      color: var(--accent-dark);
+      box-shadow: 0 0 0 3px rgba(230, 0, 35, 0.08);
+    }
+
     .filter {
       min-height: 30px;
       padding: 0 10px;
@@ -912,7 +955,8 @@
       }
 
       .steps,
-      .metrics {
+      .metrics,
+      .sample-buttons {
         grid-template-columns: 1fr;
       }
 
@@ -1014,6 +1058,10 @@
               Analyze
             </button>
           </div>
+          <div class="sample-picker" aria-label="Sample-data questions">
+            <div class="sample-label">Ask from sample data</div>
+            <div class="sample-buttons" id="sampleQuestions"></div>
+          </div>
           <div class="filters" aria-label="Active analysis scope">
             <span class="filter">Dataset <b>visual_discovery_boardroom_mart</b></span>
             <span class="filter">Grain <b>month x surface</b></span>
@@ -1022,7 +1070,7 @@
           </div>
         </section>
 
-        <section class="metrics" aria-label="Analysis summary metrics">
+        <section class="metrics" id="metricsGrid" aria-label="Analysis summary metrics">
           <div class="metric">
             <span>Total ad revenue</span>
             <div><strong>$973M</strong><div class="trend">+$48M vs Feb</div></div>
@@ -1048,9 +1096,9 @@
                 <h2>Ranked findings</h2>
                 <p>Each material claim is backed by executed SQL and dbt-documented context.</p>
               </div>
-              <span class="query-chip">2 source queries</span>
+              <span class="query-chip" id="sourceQueryCount">2 source queries</span>
             </div>
-            <div class="findings">
+            <div class="findings" id="findingsList">
               <article class="finding">
                 <div class="rank">1</div>
                 <div>
@@ -1124,7 +1172,7 @@
               Copy brief
             </button>
           </div>
-          <div class="brief-body">
+            <div class="brief-body" id="briefBody">
             <h3>Answer</h3>
             <p>March revenue growth slowed because brand video declined while shopping and visual search continued to grow. Total ad revenue still rose from $925M to $973M, but the monthly lift stepped down from +$69M to +$48M.</p>
             <h3>Decision lens</h3>
@@ -1137,7 +1185,7 @@
               SQL appendix
               <span>q001 + q002</span>
             </button>
-            <pre>q001_surface_revenue
+            <pre id="sqlText">q001_surface_revenue
 select month, surface, net_revenue_millions
 from ad_revenue_by_surface
 order by month, surface;
@@ -1197,36 +1245,277 @@ order by month;</pre>
   </div>
 
   <script>
-    const trustData = {
-      queries: [
-        ["q001_surface_revenue", "Rows: 9 · result hash d8f04b · chart source for surface mix"],
-        ["q002_revenue_growth_waterfall", "Rows: 3 · result hash 7b21ce · source for deceleration claim"]
-      ],
-      metrics: [
-        ["net_revenue_millions", "Documented metric from ad_revenue_by_surface"],
-        ["revenue_change_millions", "Derived from documented monthly totals"]
-      ],
+    const sampleScenarios = [
+      {
+        id: "revenue_slowdown",
+        question: "Why did ad revenue growth slow in March?",
+        metrics: [
+          ["Total ad revenue", "$973M", "+$48M vs Feb", "up"],
+          ["Growth deceleration", "-$21M", "change in monthly lift", "down"],
+          ["Strongest surface", "Shopping", "+$38M in March", "up"],
+          ["Primary drag", "Video", "-$14M in March", "down"]
+        ],
+        sourceCount: "2 source queries",
+        findings: [
+          ["Revenue still grew, but the monthly lift fell from +$69M to +$48M.", "The slowdown is a deceleration story, not a contraction story. The total reached $973M in March.", "q002_revenue_growth_waterfall"],
+          ["Shopping and visual search added $62M combined, offset by a video decline.", "The commercial-intent surfaces compounded while brand video reduced the net March gain.", "q001_surface_revenue"],
+          ["The model can answer this at month x surface grain, but not at advertiser cohort grain.", "The context file does not document cohort joins for this mart, so the MVP keeps that caveat explicit.", "datamart_context.json"]
+        ],
+        brief: [
+          ["Answer", "March revenue growth slowed because brand video declined while shopping and visual search continued to grow. Total ad revenue still rose from $925M to $973M, but the monthly lift stepped down from +$69M to +$48M."],
+          ["Decision lens", "Ask the monetization team to separate brand video demand softness from campaign delivery or pricing effects. The documented mart supports month x surface analysis; it does not yet support advertiser cohort causality."],
+          ["Caveats", "All numbers come from synthetic MVP data. Claims are restricted to documented model grain and source query IDs q001 and q002."]
+        ],
+        bars: [[76, 61, 38], [84, 66, 39], [92, 71, 36]],
+        sql: `q001_surface_revenue
+select month, surface, net_revenue_millions
+from ad_revenue_by_surface
+order by month, surface;
+
+q002_revenue_growth_waterfall
+with totals as (
+  select month, sum(net_revenue_millions) as total_revenue_millions
+  from ad_revenue_by_surface
+  group by 1
+)
+select month, total_revenue_millions,
+       total_revenue_millions - lag(total_revenue_millions) over (order by month) as revenue_change_millions
+from totals
+order by month;`,
+        followup: "Brand video should be inspected first because it declined by $14M while the commercial-intent surfaces grew.",
+        trust: {
+          queries: [
+            ["q001_surface_revenue", "Rows: 9 - chart source for surface mix"],
+            ["q002_revenue_growth_waterfall", "Rows: 3 - source for deceleration claim"]
+          ],
+          metrics: [
+            ["net_revenue_millions", "Documented metric from ad_revenue_by_surface"],
+            ["revenue_change_millions", "Derived from documented monthly totals"]
+          ]
+        }
+      },
+      {
+        id: "shopping_efficiency",
+        question: "Are shopping-intent surfaces scaling efficiently?",
+        metrics: [
+          ["Commercial events", "54.9B", "+5.1B vs Feb", "up"],
+          ["Revenue / user", "$1.93", "+0.7% vs Feb", "up"],
+          ["Best efficiency", "Shopping", "$2.26 per engaged user", "up"],
+          ["Watch item", "Search", "intent growing faster than yield", "down"]
+        ],
+        sourceCount: "2 source queries",
+        findings: [
+          ["Shopping is scaling with the best revenue yield in the sample mart.", "Performance Shopping Ads generated $449M on 199M engaged users, the strongest revenue per engaged user among documented surfaces.", "q003_intent_efficiency"],
+          ["Visual search engagement is compounding, but monetization yield trails shopping.", "Commercial events rose with engaged users, but the revenue-per-user gap suggests pricing or ad load room before assuming demand saturation.", "q003_intent_efficiency"],
+          ["Brand video should not be used as the benchmark for shopping-intent performance.", "Its event intensity is structurally lower in the documented model, so comparing it directly to shopping intent would blur different user missions.", "datamart_context.json"]
+        ],
+        brief: [
+          ["Answer", "Yes, the shopping-intent surfaces are scaling in the synthetic sample. Shopping has the highest revenue per engaged user, while visual search shows strong intent growth with lower monetization yield."],
+          ["Decision lens", "Fund the MVP path that separates intent growth from revenue yield. The useful operator question is whether visual search needs better commercial ad matching or whether shopping already captures the highest-intent demand."],
+          ["Caveats", "The sample supports month x surface comparisons only. It does not include user-level sessions, auction pressure, or advertiser cohort quality."]
+        ],
+        bars: [[72, 62, 24], [82, 67, 25], [92, 74, 24]],
+        sql: `q003_intent_efficiency
+select
+  month,
+  surface,
+  commercial_searches_billions,
+  engaged_users_millions,
+  commercial_searches_billions * 1000 / engaged_users_millions as commercial_events_per_user,
+  net_revenue_millions / engaged_users_millions as revenue_per_engaged_user
+from ad_revenue_by_surface
+order by month, surface;`,
+        followup: "Shopping is the cleanest efficient-scale story; visual search is the next monetization question because intent is growing faster than revenue yield.",
+        trust: {
+          queries: [
+            ["q001_surface_revenue", "Rows: 9 - source for surface-level revenue"],
+            ["q003_intent_efficiency", "Rows: 9 - derived intent and yield metrics"]
+          ],
+          metrics: [
+            ["commercial_search_intensity", "Documented proxy for shopping intent and visual discovery engagement"],
+            ["revenue_per_engaged_user", "Derived from documented revenue and engaged-user fields"]
+          ]
+        }
+      },
+      {
+        id: "engagement_conversion",
+        question: "Where is engagement not converting into revenue?",
+        metrics: [
+          ["Engaged users", "504M", "+17M vs Feb", "up"],
+          ["Revenue / user", "$1.93", "flat despite user growth", "down"],
+          ["Weakest conversion", "Video", "$1.41 per engaged user", "down"],
+          ["Best next drilldown", "Surface", "cohort joins unavailable", "down"]
+        ],
+        sourceCount: "3 source queries",
+        findings: [
+          ["Brand video has the clearest engagement-to-revenue gap.", "Engaged users were roughly stable while revenue declined, which points to yield, demand, or pricing rather than audience loss.", "q004_engagement_conversion"],
+          ["Visual search has healthy engagement growth but still trails shopping on revenue yield.", "That makes it the highest-leverage monetization question after isolating the video decline.", "q003_intent_efficiency"],
+          ["The MVP should not claim advertiser-level causality from this mart.", "The documented grain is month x surface, so the agent can rank surfaces but must caveat cohort-level explanations.", "datamart_context.json"]
+        ],
+        brief: [
+          ["Answer", "Brand video is where engagement is least clearly converting into revenue in the sample data. It retained audience scale but declined in revenue, while shopping and visual search kept expanding."],
+          ["Decision lens", "Use this as a triage view: first inspect video demand and yield, then inspect whether visual search can close the revenue-per-user gap to shopping."],
+          ["Caveats", "The model does not include advertiser cohorts, auction clearing prices, or campaign objectives, so it can rank surfaces but not prove root cause."]
+        ],
+        bars: [[70, 64, 42], [79, 69, 42], [84, 75, 40]],
+        sql: `q004_engagement_conversion
+with enriched as (
+  select
+    month,
+    surface,
+    net_revenue_millions,
+    engaged_users_millions,
+    net_revenue_millions / engaged_users_millions as revenue_per_engaged_user
+  from ad_revenue_by_surface
+)
+select *
+from enriched
+order by month, revenue_per_engaged_user desc;`,
+        followup: "Brand video is the first conversion gap. Visual search is the second question because engagement is growing but revenue yield is still below shopping.",
+        trust: {
+          queries: [
+            ["q001_surface_revenue", "Rows: 9 - source for surface revenue and engaged users"],
+            ["q003_intent_efficiency", "Rows: 9 - intent and yield comparison"],
+            ["q004_engagement_conversion", "Rows: 9 - revenue per engaged user ranking"]
+          ],
+          metrics: [
+            ["engaged_users_millions", "Documented monthly engaged users attributed to each surface"],
+            ["revenue_per_engaged_user", "Derived from documented revenue and engagement fields"]
+          ]
+        }
+      },
+      {
+        id: "causality_guardrail",
+        question: "Can we prove advertiser cohort causality from this mart?",
+        metrics: [
+          ["Verdict", "Not yet", "qualified answer", "down"],
+          ["Supported grain", "Surface", "month x surface only", "up"],
+          ["Missing context", "Cohorts", "no documented join", "down"],
+          ["Safe answer", "Triage", "rank surfaces first", "up"]
+        ],
+        sourceCount: "1 source query + context",
+        findings: [
+          ["The MVP should refuse a causal cohort answer from the current sample mart.", "The dbt context documents month x surface grain but no advertiser cohort table or join path.", "datamart_context.json"],
+          ["It can still rank the surface-level pattern safely.", "The mart supports saying video is the drag and shopping-intent surfaces are the offset, with query-backed evidence.", "q001_surface_revenue"],
+          ["The next data requirement is explicit cohort documentation.", "Add advertiser cohort definitions, campaign objective fields, and a documented join before asking causal retention questions.", "datamart_context.json"]
+        ],
+        brief: [
+          ["Answer", "No. The MVP should not prove advertiser cohort causality from this sample mart. It can only provide a surface-level triage answer with caveats."],
+          ["Decision lens", "This is the trust-first behavior to show in the demo: when the data model cannot support the question, the agent narrows the answer instead of inventing a causal explanation."],
+          ["Caveats", "The available sample data is synthetic and documented at month x surface grain. Cohort-level claims require a new documented model."]
+        ],
+        bars: [[76, 61, 38], [84, 66, 39], [92, 71, 36]],
+        sql: `context check
+datamart_context.json
+- table: ad_revenue_by_surface
+- grain: one row per month and monetization surface
+- documented joins: none
+
+q001_surface_revenue
+select month, surface, net_revenue_millions
+from ad_revenue_by_surface
+order by month, surface;`,
+        followup: "The safe next step is to ask for a surface-level triage answer or add a documented advertiser cohort model.",
+        trust: {
+          queries: [
+            ["datamart_context.json", "Documents table grain and missing joins"],
+            ["q001_surface_revenue", "Rows: 9 - safe surface-level ranking only"]
+          ],
+          metrics: [
+            ["net_ad_revenue", "Supported at month x surface grain"],
+            ["advertiser cohort retention", "Not documented in this sample context"]
+          ]
+        }
+      }
+    ];
+
+    const baseTrust = {
       models: [
-        ["ad_revenue_by_surface", "Grain: month x surface · owner: monetization analytics"],
+        ["ad_revenue_by_surface", "Grain: month x surface - owner: monetization analytics"],
         ["visual_discovery_boardroom_mart", "Trusted context built from manifest, catalog, and YAML metadata"]
       ],
       caveats: [
         ["No cohort causality", "Advertiser cohort joins are not documented in this MVP fixture"],
-        ["Synthetic data", "Demo values are generated for product evaluation only"]
+        ["Synthetic data", "Demo values are generated for product evaluation only"],
+        ["Local scope", "Queries run against local DuckDB in read-only mode"]
       ]
     };
 
     const trustList = document.getElementById("trustList");
     const toast = document.getElementById("toast");
     const toastText = document.getElementById("toastText");
+    const sampleQuestions = document.getElementById("sampleQuestions");
+    const questionInput = document.getElementById("questionInput");
+    const metricsGrid = document.getElementById("metricsGrid");
+    const findingsList = document.getElementById("findingsList");
+    const sourceQueryCount = document.getElementById("sourceQueryCount");
+    const briefBody = document.getElementById("briefBody");
+    const sqlText = document.getElementById("sqlText");
+    const followupAnswer = document.getElementById("followupAnswer");
+    let activeScenario = sampleScenarios[0];
+    let activeTrustTab = "queries";
 
     function renderTrust(tab) {
+      const trustData = {
+        queries: activeScenario.trust.queries,
+        metrics: activeScenario.trust.metrics,
+        models: baseTrust.models,
+        caveats: baseTrust.caveats
+      };
       trustList.innerHTML = trustData[tab].map(([title, body]) => `
         <div class="trust-item">
           <strong>${title}</strong>
           <span>${body}</span>
         </div>
       `).join("");
+    }
+
+    function renderSampleQuestions() {
+      sampleQuestions.innerHTML = sampleScenarios.map((scenario) => `
+        <button class="sample-question" type="button" data-scenario="${scenario.id}" aria-pressed="${scenario.id === activeScenario.id}">
+          ${scenario.question}
+        </button>
+      `).join("");
+    }
+
+    function renderMetrics() {
+      metricsGrid.innerHTML = activeScenario.metrics.map(([label, value, trend, direction]) => `
+        <div class="metric">
+          <span>${label}</span>
+          <div><strong>${value}</strong><div class="trend${direction === "down" ? " down" : ""}">${trend}</div></div>
+        </div>
+      `).join("");
+    }
+
+    function renderFindings() {
+      sourceQueryCount.textContent = activeScenario.sourceCount;
+      findingsList.innerHTML = activeScenario.findings.map(([title, body, queryId], index) => `
+        <article class="finding">
+          <div class="rank">${index + 1}</div>
+          <div>
+            <h3>${title}</h3>
+            <p>${body}</p>
+            <span class="query-chip">${queryId}</span>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderBrief() {
+      briefBody.innerHTML = activeScenario.brief.map(([heading, body]) => `
+        <h3>${heading}</h3>
+        <p>${body}</p>
+      `).join("");
+      sqlText.textContent = activeScenario.sql;
+      followupAnswer.textContent = activeScenario.followup;
+    }
+
+    function renderBars() {
+      document.querySelectorAll(".month").forEach((month, monthIndex) => {
+        month.querySelectorAll(".bar").forEach((bar, barIndex) => {
+          bar.style.height = `${activeScenario.bars[monthIndex][barIndex]}%`;
+        });
+      });
     }
 
     function showToast(message) {
@@ -1236,6 +1525,20 @@ order by month;</pre>
       showToast.timer = window.setTimeout(() => {
         toast.dataset.show = "false";
       }, 1800);
+    }
+
+    function selectScenario(id, announce = true) {
+      activeScenario = sampleScenarios.find((scenario) => scenario.id === id) || sampleScenarios[0];
+      questionInput.value = activeScenario.question;
+      renderSampleQuestions();
+      renderMetrics();
+      renderFindings();
+      renderBrief();
+      renderBars();
+      renderTrust(activeTrustTab);
+      if (announce) {
+        showToast("Sample question loaded from the demo datamart");
+      }
     }
 
     document.querySelectorAll(".step").forEach((button) => {
@@ -1250,16 +1553,28 @@ order by month;</pre>
       button.addEventListener("click", () => {
         document.querySelectorAll(".tab").forEach((item) => item.setAttribute("aria-selected", "false"));
         button.setAttribute("aria-selected", "true");
-        renderTrust(button.dataset.tab);
+        activeTrustTab = button.dataset.tab;
+        renderTrust(activeTrustTab);
       });
     });
 
+    sampleQuestions.addEventListener("click", (event) => {
+      const button = event.target.closest(".sample-question");
+      if (button) {
+        selectScenario(button.dataset.scenario);
+      }
+    });
+
     document.getElementById("runSample").addEventListener("click", () => {
-      showToast("Running q001 and q002 locally");
-      window.setTimeout(() => showToast("Analysis complete · 2 query hashes recorded"), 850);
+      showToast(`Running sample: ${activeScenario.question}`);
+      window.setTimeout(() => showToast("Analysis complete - query provenance recorded"), 850);
     });
 
     document.getElementById("askButton").addEventListener("click", () => {
+      const matchingScenario = sampleScenarios.find((scenario) => scenario.question === questionInput.value.trim());
+      if (matchingScenario) {
+        selectScenario(matchingScenario.id, false);
+      }
       showToast("Question analyzed with documented context");
     });
 
@@ -1269,7 +1584,7 @@ order by month;</pre>
     });
 
     document.getElementById("copyBrief").addEventListener("click", async () => {
-      const text = document.querySelector(".brief-body").innerText;
+      const text = briefBody.innerText;
       try {
         await navigator.clipboard.writeText(text);
         showToast("Brief copied");
@@ -1285,14 +1600,13 @@ order by month;</pre>
 
     document.getElementById("followupButton").addEventListener("click", () => {
       const input = document.getElementById("followupInput").value.trim();
-      const answer = document.getElementById("followupAnswer");
-      answer.textContent = input
-        ? "Brand video remains the first inspection target. The answer is grounded in q001_surface_revenue and stays within month x surface grain."
+      followupAnswer.textContent = input
+        ? activeScenario.followup
         : "Ask a follow-up question to reuse the same governed context.";
-      showToast("Follow-up answered with source q001");
+      showToast("Follow-up answered from active sample question");
     });
 
-    renderTrust("queries");
+    selectScenario("revenue_slowdown", false);
   </script>
 </body>
 </html>

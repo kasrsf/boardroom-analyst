@@ -180,6 +180,8 @@ This repo includes a manager-ready product evaluation package:
 - `marketing/demo-script.md`: narration for a live or recorded demo.
 - `marketing/faq.md`: likely manager questions and crisp answers.
 - `site/index.html`: hosted MVP product demo for the governed analytics workflow.
+- `demo/queries/q003_intent_efficiency.sql`: sample query for shopping-intent efficiency.
+- `demo/queries/q004_engagement_conversion.sql`: sample query for engagement-to-revenue conversion.
 - `demo/build_demo.py`: builds a complete synthetic demo.
 - `demo/showcase/index.html`: browser showcase used for the recording.
 - `demo/output/boardroom-analyst-demo.mp4`: short demo recording artifact.

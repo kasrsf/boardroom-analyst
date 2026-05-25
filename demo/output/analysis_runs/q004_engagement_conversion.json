@@ -1,0 +1,82 @@
+{
+  "columns": [
+    "month",
+    "surface",
+    "net_revenue_millions",
+    "engaged_users_millions",
+    "revenue_per_engaged_user"
+  ],
+  "database": "/Users/kasra/Documents/Skills Marketplace/demo/output/boardroom_demo.duckdb",
+  "elapsed_ms": 5.446,
+  "query_id": "q004_engagement_conversion",
+  "result_hash": "33453aab31d6e92101ab65784df1bb048727cd5f2ecbe5eda0841ed4a68a461f",
+  "row_count": 9,
+  "rows": [
+    {
+      "engaged_users_millions": "182.0",
+      "month": "2026-01-01",
+      "net_revenue_millions": "372.0",
+      "revenue_per_engaged_user": 2.043956043956044,
+      "surface": "Performance Shopping Ads"
+    },
+    {
+      "engaged_users_millions": "165.0",
+      "month": "2026-01-01",
+      "net_revenue_millions": "298.0",
+      "revenue_per_engaged_user": 1.8060606060606061,
+      "surface": "Visual Search Ads"
+    },
+    {
+      "engaged_users_millions": "124.0",
+      "month": "2026-01-01",
+      "net_revenue_millions": "186.0",
+      "revenue_per_engaged_user": 1.5,
+      "surface": "Brand Video Ads"
+    },
+    {
+      "engaged_users_millions": "190.0",
+      "month": "2026-02-01",
+      "net_revenue_millions": "410.0",
+      "revenue_per_engaged_user": 2.1578947368421053,
+      "surface": "Performance Shopping Ads"
+    },
+    {
+      "engaged_users_millions": "171.0",
+      "month": "2026-02-01",
+      "net_revenue_millions": "322.0",
+      "revenue_per_engaged_user": 1.8830409356725146,
+      "surface": "Visual Search Ads"
+    },
+    {
+      "engaged_users_millions": "126.0",
+      "month": "2026-02-01",
+      "net_revenue_millions": "193.0",
+      "revenue_per_engaged_user": 1.5317460317460319,
+      "surface": "Brand Video Ads"
+    },
+    {
+      "engaged_users_millions": "199.0",
+      "month": "2026-03-01",
+      "net_revenue_millions": "449.0",
+      "revenue_per_engaged_user": 2.2562814070351758,
+      "surface": "Performance Shopping Ads"
+    },
+    {
+      "engaged_users_millions": "178.0",
+      "month": "2026-03-01",
+      "net_revenue_millions": "345.0",
+      "revenue_per_engaged_user": 1.9382022471910112,
+      "surface": "Visual Search Ads"
+    },
+    {
+      "engaged_users_millions": "127.0",
+      "month": "2026-03-01",
+      "net_revenue_millions": "179.0",
+      "revenue_per_engaged_user": 1.4094488188976377,
+      "surface": "Brand Video Ads"
+    }
+  ],
+  "sql": "with enriched as (\n  select\n    month,\n    surface,\n    net_revenue_millions,\n    engaged_users_millions,\n    net_revenue_millions / engaged_users_millions as revenue_per_engaged_user\n  from ad_revenue_by_surface\n)\nselect *\nfrom enriched\norder by month, revenue_per_engaged_user desc",
+  "sql_hash": "4267c05e2d93c5c9cabc38b5fc1c3bf0a3083bcf39802086985fdac5204f2bd8",
+  "truncated": false
+}

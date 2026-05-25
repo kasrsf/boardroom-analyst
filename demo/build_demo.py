@@ -44,12 +44,24 @@ def main() -> int:
         (ROOT / "demo" / "queries" / "q002_revenue_growth_waterfall.sql").read_text(encoding="utf-8"),
         query_id="q002_revenue_growth_waterfall",
     )
+    q003 = execute_read_only_query(
+        db_path,
+        (ROOT / "demo" / "queries" / "q003_intent_efficiency.sql").read_text(encoding="utf-8"),
+        query_id="q003_intent_efficiency",
+    )
+    q004 = execute_read_only_query(
+        db_path,
+        (ROOT / "demo" / "queries" / "q004_engagement_conversion.sql").read_text(encoding="utf-8"),
+        query_id="q004_engagement_conversion",
+    )
     write_query_result(q001, ANALYSIS_DIR / "q001_surface_revenue.json")
     write_query_result(q002, ANALYSIS_DIR / "q002_revenue_growth_waterfall.json")
+    write_query_result(q003, ANALYSIS_DIR / "q003_intent_efficiency.json")
+    write_query_result(q004, ANALYSIS_DIR / "q004_engagement_conversion.json")
     _write_chart_csv(q001, REPORT_DIR / "charts" / "revenue_by_surface.csv")
     _write_chart_csv(q002, REPORT_DIR / "charts" / "revenue_growth_waterfall.csv")
 
-    run = _analysis_run(q001, q002)
+    run = _analysis_run(q001, q002, q003, q004)
     write_insight_brief(run, REPORT_DIR)
 
     print(
@@ -97,7 +109,7 @@ def _write_chart_csv(query_result: dict, output: Path) -> None:
         writer.writerows(query_result["rows"])
 
 
-def _analysis_run(q001: dict, q002: dict) -> dict:
+def _analysis_run(q001: dict, q002: dict, q003: dict, q004: dict) -> dict:
     return {
         "run_id": "boardroom-demo",
         "question": "The CEO asks: why did ad revenue growth slow in March?",
@@ -125,6 +137,18 @@ def _analysis_run(q001: dict, q002: dict) -> dict:
                 "confidence": "high",
                 "caveats": ["Commercial search and engaged-user fields are synthetic proxies for demo purposes."],
             },
+            {
+                "claim": "Shopping-intent efficiency is highest on Performance Shopping Ads, while Visual Search Ads show intent growth with lower revenue yield.",
+                "query_id": "q003_intent_efficiency",
+                "confidence": "medium",
+                "caveats": ["Revenue per engaged user is a derived sample metric, not a user-level causal analysis."],
+            },
+            {
+                "claim": "Brand Video Ads show the clearest engagement-to-revenue conversion gap in the sample data.",
+                "query_id": "q004_engagement_conversion",
+                "confidence": "medium",
+                "caveats": ["The documented mart does not include advertiser cohorts, auction pressure, or campaign objectives."],
+            },
         ],
         "charts": [
             {
@@ -147,10 +171,12 @@ def _analysis_run(q001: dict, q002: dict) -> dict:
         "queries": [
             _query_metadata(q001),
             _query_metadata(q002),
+            _query_metadata(q003),
+            _query_metadata(q004),
         ],
         "caveats": [
             "Demo uses synthetic visual-discovery advertising and engagement data.",
-            "The fixture is tailored for an internal executive pitch and is not reported company data.",
+            "The fixture is tailored for internal product evaluation and is not reported company data.",
             "The brief does not infer metrics outside documented dbt context.",
         ],
     }

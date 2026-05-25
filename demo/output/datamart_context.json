@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-24T19:15:24.837682+00:00",
+  "generated_at": "2026-05-25T01:06:37.274667+00:00",
   "metrics": [
     {
       "description": "Net advertising revenue across visual-discovery monetization surfaces.",
@@ -105,7 +105,10 @@
       "priority_questions": [
         "The CEO asks why ad revenue growth slowed in March.",
         "Which monetization surface is driving or dragging growth?",
-        "Are shopping-intent surfaces scaling faster than brand video?"
+        "Are shopping-intent surfaces scaling faster than brand video?",
+        "Are shopping-intent surfaces scaling efficiently?",
+        "Where is engagement not converting into revenue?",
+        "Can we prove advertiser cohort causality from this mart?"
       ],
       "schema": "main",
       "trust_level": "high",

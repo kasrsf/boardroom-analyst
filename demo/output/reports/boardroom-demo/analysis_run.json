@@ -1,7 +1,7 @@
 {
   "caveats": [
     "Demo uses synthetic visual-discovery advertising and engagement data.",
-    "The fixture is tailored for an internal executive pitch and is not reported company data.",
+    "The fixture is tailored for internal product evaluation and is not reported company data.",
     "The brief does not infer metrics outside documented dbt context."
   ],
   "charts": [
@@ -50,6 +50,22 @@
       "claim": "Shopping-intent surfaces remained the strategic bright spot: Performance Shopping Ads added $39M and Visual Search Ads added $23M in March.",
       "confidence": "high",
       "query_id": "q001_surface_revenue"
+    },
+    {
+      "caveats": [
+        "Revenue per engaged user is a derived sample metric, not a user-level causal analysis."
+      ],
+      "claim": "Shopping-intent efficiency is highest on Performance Shopping Ads, while Visual Search Ads show intent growth with lower revenue yield.",
+      "confidence": "medium",
+      "query_id": "q003_intent_efficiency"
+    },
+    {
+      "caveats": [
+        "The documented mart does not include advertiser cohorts, auction pressure, or campaign objectives."
+      ],
+      "claim": "Brand Video Ads show the clearest engagement-to-revenue conversion gap in the sample data.",
+      "confidence": "medium",
+      "query_id": "q004_engagement_conversion"
     }
   ],
   "queries": [
@@ -64,6 +80,18 @@
       "result_hash": "5b8108f4b3eb2a7d2a50bc7817b0190927884a199e2fbf1e3c1916af55d2cd03",
       "row_count": 3,
       "sql": "with totals as (\n  select\n    month,\n    sum(net_revenue_millions) as total_revenue_millions\n  from ad_revenue_by_surface\n  group by 1\n),\nchanges as (\n  select\n    month,\n    total_revenue_millions,\n    total_revenue_millions - lag(total_revenue_millions) over (order by month) as revenue_change_millions\n  from totals\n)\nselect *\nfrom changes\norder by month"
+    },
+    {
+      "query_id": "q003_intent_efficiency",
+      "result_hash": "106541ee88b0918006743a242ef54f1e67e2e11c930ac10d5623e6b882c1bc3e",
+      "row_count": 9,
+      "sql": "select\n  month,\n  surface,\n  commercial_searches_billions,\n  engaged_users_millions,\n  commercial_searches_billions * 1000 / engaged_users_millions as commercial_events_per_user,\n  net_revenue_millions / engaged_users_millions as revenue_per_engaged_user\nfrom ad_revenue_by_surface\norder by month, surface"
+    },
+    {
+      "query_id": "q004_engagement_conversion",
+      "result_hash": "33453aab31d6e92101ab65784df1bb048727cd5f2ecbe5eda0841ed4a68a461f",
+      "row_count": 9,
+      "sql": "with enriched as (\n  select\n    month,\n    surface,\n    net_revenue_millions,\n    engaged_users_millions,\n    net_revenue_millions / engaged_users_millions as revenue_per_engaged_user\n  from ad_revenue_by_surface\n)\nselect *\nfrom enriched\norder by month, revenue_per_engaged_user desc"
     }
   ],
   "question": "The CEO asks: why did ad revenue growth slow in March?",

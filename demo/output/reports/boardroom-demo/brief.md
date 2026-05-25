@@ -15,6 +15,10 @@ Synthetic visual-discovery ad revenue still grew in March, but the growth rate s
   - Caveat: Surface attribution is based on the documented model grain: one row per month and monetization surface.
 - Shopping-intent surfaces remained the strategic bright spot: Performance Shopping Ads added $39M and Visual Search Ads added $23M in March. [`q001_surface_revenue`] Confidence: `high`
   - Caveat: Commercial search and engaged-user fields are synthetic proxies for demo purposes.
+- Shopping-intent efficiency is highest on Performance Shopping Ads, while Visual Search Ads show intent growth with lower revenue yield. [`q003_intent_efficiency`] Confidence: `medium`
+  - Caveat: Revenue per engaged user is a derived sample metric, not a user-level causal analysis.
+- Brand Video Ads show the clearest engagement-to-revenue conversion gap in the sample data. [`q004_engagement_conversion`] Confidence: `medium`
+  - Caveat: The documented mart does not include advertiser cohorts, auction pressure, or campaign objectives.
 
 ## Charts
 
@@ -32,7 +36,7 @@ Synthetic visual-discovery ad revenue still grew in March, but the growth rate s
 ## Caveats
 
 - Demo uses synthetic visual-discovery advertising and engagement data.
-- The fixture is tailored for an internal executive pitch and is not reported company data.
+- The fixture is tailored for internal product evaluation and is not reported company data.
 - The brief does not infer metrics outside documented dbt context.
 
 ## SQL Appendix
@@ -75,3 +79,38 @@ order by month
 ```
 
 Rows: `3`; result hash: `5b8108f4b3eb2a7d2a50bc7817b0190927884a199e2fbf1e3c1916af55d2cd03`
+
+### `q003_intent_efficiency`
+
+```sql
+select
+  month,
+  surface,
+  commercial_searches_billions,
+  engaged_users_millions,
+  commercial_searches_billions * 1000 / engaged_users_millions as commercial_events_per_user,
+  net_revenue_millions / engaged_users_millions as revenue_per_engaged_user
+from ad_revenue_by_surface
+order by month, surface
+```
+
+Rows: `9`; result hash: `106541ee88b0918006743a242ef54f1e67e2e11c930ac10d5623e6b882c1bc3e`
+
+### `q004_engagement_conversion`
+
+```sql
+with enriched as (
+  select
+    month,
+    surface,
+    net_revenue_millions,
+    engaged_users_millions,
+    net_revenue_millions / engaged_users_millions as revenue_per_engaged_user
+  from ad_revenue_by_surface
+)
+select *
+from enriched
+order by month, revenue_per_engaged_user desc
+```
+
+Rows: `9`; result hash: `33453aab31d6e92101ab65784df1bb048727cd5f2ecbe5eda0841ed4a68a461f`
